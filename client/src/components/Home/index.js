@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import CssBaseline from "@material-ui/core/CssBaseline";
 import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
+
+import { ThemeProvider, styled } from '@material-ui/core/styles';
+import SessionList from '../SessionList/SessionList';
+import AddSession from '../AddSession/AddSession';
 
 
 //Dev mode
@@ -23,17 +25,22 @@ const fetch = require("node-fetch");
 
 const opacityValue = 0.9;
 
-const theme = createTheme({
+const lightTheme = createTheme({
   palette: {
-    type: 'dark',
+    type: 'light',
     background: {
-      default: "#000000"
+      default: "#ffffff"
     },
     primary: {
-      main: "#52f1ff",
+      main: '#2196f3',
+
+      dark: '#ba6b6c',
+      background: '#e1f1fd'
     },
     secondary: {
-      main: "#b552f7",
+      main: "#b71c1c",
+      light: '#f05545',
+      dark: '#7f0000'
     },
   },
 });
@@ -113,60 +120,47 @@ class Home extends Component {
   }
 
   render() {
-    const { classes } = this.props;
-
-
-
-    const mainMessage = (
-      <Grid
-        container
-        spacing={0}
-        direction="column"
-        justify="flex-start"
-        alignItems="flex-start"
-        style={{ minHeight: '100vh' }}
-        className={classes.mainMessageContainer}
-      >
-        <Grid item>
-
-          <Typography
-            variant={"h3"}
-            className={classes.mainMessage}
-            align="flex-start"
-          >
-            {this.state.mode === 0 ? (
-              <React.Fragment>
-              
-                Welcome to MSci245 Jay! Just Kidding Haha! Amaal
-
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
-                Welcome back!
-              </React.Fragment>
-            )}
-          </Typography>
-
-        </Grid>
-      </Grid>
-    )
 
 
     return (
-      <MuiThemeProvider theme={theme}>
-        <div className={classes.root}>
-          <CssBaseline />
-          <Paper
-            className={classes.paper}
-          >
-            {mainMessage}
-          </Paper>
-
-        </div>
-      </MuiThemeProvider>
+      <div>
+        <Review />
+      </div>
     );
   }
 }
+const Review = () => {
+
+  return (
+    <ThemeProvider theme={lightTheme}>
+      <Grid container spacing={3} style={{ padding: '25px' }}>
+
+        <Grid item xs={12}>
+
+          <Typography variant="h3" color='secondary' style={{
+            textAlign: 'center',
+          }}>
+            GameTime
+          </Typography>
+
+        </Grid>
+
+        <Grid item xs={12}>
+          <AddSession />
+        </Grid>
+
+        <Grid item xs={12}>
+          <SessionList />
+        </Grid>
+        
+        
+
+      </Grid >
+
+    </ThemeProvider>
+  );
+}
+
 
 Home.propTypes = {
   classes: PropTypes.object.isRequired
