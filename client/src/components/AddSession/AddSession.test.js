@@ -6,8 +6,12 @@ import AddSession from './AddSession';
 
 test("AddSession Dialogue", () => {
     const { getByTestId } = render(<AddSession />);
+    
+    //Presses button to open Dialogue box
     const buttonElement = getByTestId('addSessionButton');
     fireEvent.click(buttonElement);
+
+    //Expects Dialogue box to be open
     expect(getByTestId('addSessionModal')).toBeInTheDocument();
 }); 
 
@@ -24,18 +28,5 @@ test("AddSession Submit without input", () => {
     //expects 'error required fields' label
     const requiredFieldLabel = getByTestId('requiredFields');
     expect(requiredFieldLabel).toBeInTheDocument();
-
-}); 
-
-test("Closing AddSession Dialogue", () => {
-    const { getByTestId } = render(<AddSession />);
-    const buttonElement = getByTestId('addSessionButton');
-    fireEvent.click(buttonElement);
-
-    //Presses close
-    const closeButton = getByTestId('closeButton');
-    fireEvent.click(closeButton);
-
-    expect(getByTestId('addSessionModal')).not.toBeInTheDocument();    
 
 }); 

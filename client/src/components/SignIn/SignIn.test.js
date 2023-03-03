@@ -7,6 +7,7 @@ const onChangeTextMock = jest.fn();
 
 test("SignIn", () => {
     const { getByTestId } = render(<SignIn/>);
+    //Checks if email and password input boxes are present
     const emailBox = getByTestId('addEmail');
     const passwordBox = getByTestId('addPassword');
 

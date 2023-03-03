@@ -181,6 +181,7 @@ const callApiSignUp = async (signUp) => {
               variant="contained"
               color="black"
               sx={{ mt: 3, mb: 2, color: '#FFD700' }}
+              data-testid="submitButton"
             >
               Sign Up
             </Button>
@@ -192,7 +193,7 @@ const callApiSignUp = async (signUp) => {
               </Grid>
               <Grid item>
                 <Snackbar open={snackError} onClose={handleClose} autoHideDuration={3000} >
-                  <Alert variant="filled" severity="error">Please fill out missing fields</Alert>
+                  <Alert variant="filled" severity="error" data-testid="requiredAlert">Please fill out missing fields</Alert>
                 </Snackbar>
               </Grid>
             </Grid>
