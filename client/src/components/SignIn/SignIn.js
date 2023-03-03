@@ -95,6 +95,7 @@ export default function SignIn() {
               name="email"
               autoComplete="email"
               autoFocus
+              data-testid="addEmail"
             />
             <TextField
               margin="normal"
@@ -106,6 +107,7 @@ export default function SignIn() {
               type="password"
               id="password"
               autoComplete="current-password"
+              data-testid="addPassword"
             />
             <Button
               type="submit"

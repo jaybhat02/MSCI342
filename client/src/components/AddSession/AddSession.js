@@ -199,12 +199,12 @@ const AddSession = () => {
                     </Box>
 
                     <Box sx={{ textAlign: 'center' }} hidden={requiredField}>
-                        <Chip color="secondary" label="Make sure all fields are filled in" />
+                        <Chip color="secondary" data-testid="requiredFields" label="Make sure all fields are filled in" />
                     </Box>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={handleSubmit}>Submit</Button>
+                    <Button onClick={handleClose} data-testid="closeButton">Cancel</Button>
+                    <Button onClick={handleSubmit} data-testid="submitButton">Submit</Button>
                 </DialogActions>
             </Dialog>
 
