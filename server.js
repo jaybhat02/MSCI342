@@ -58,10 +58,11 @@ app.post('/api/addSession', (req, res) => {
 	console.log(values);
 	connection.query(sql, [values], (error, results, fields) => {
 		if (error) {
-			return console.error(error.message);
+			console.error(error.message);
+			return { status: "fail" };
 		}
 
-		res.send({ express: results });
+		res.send({ status: "pass" });
 	});
 	connection.end();
 });

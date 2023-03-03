@@ -15,6 +15,7 @@
     "@mui/material": "^5.11.10",
     "@mui/styled-engine-sc": "^5.11.9",
     "@mui/x-date-pickers": "^5.0.19",
+    "@testing-library/jest-dom": "^5.16.5",
     "datetime-picker-reactjs": "^1.0.3",
     "install": "^0.12.2",
     "mathjs": "^5.10.3",
