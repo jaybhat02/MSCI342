@@ -32,7 +32,7 @@ const lightTheme = createTheme({
             background: '#e1f1fd'
         },
         secondary: {
-            main: "#b71c1c",
+            main: "#ffd700",
             light: '#f05545',
             dark: '#7f0000'
         },

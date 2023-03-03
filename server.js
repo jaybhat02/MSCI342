@@ -38,6 +38,15 @@ app.post('/api/loadUserSettings', (req, res) => {
 
 //Select email,password where email=(?) AND password=(?);
 
+app.post('/api/getSessions', (req, res) => {
+	let connection = mysql.createConnection(config);
+	let sql = "SELECT * FROM sessions";
+	connection.query(sql, function (err, result, fields) {
+		if (err) throw err;
+		res.send({ results: result });
+	});
+	connection.end();
+});
 
 app.post('/api/addSession', (req, res) => {
 	console.log("here")
