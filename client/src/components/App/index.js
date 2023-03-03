@@ -5,8 +5,10 @@ import {
   Link,
 } from 'react-router-dom';
 
-import Home from '../Home';
+import Home from '../Home/Home';
 import PrivateRoute from '../Navigation/PrivateRoute.js';
+import SignIn from '../SignIn/SignIn';
+import SignUp from '../SignUp/SignUp';
 
 
 
@@ -32,9 +34,10 @@ class App extends Component {
   render() {
     return (
 	  <Router>
-	    <div>
-        <PrivateRoute exact path="/" component={Home}/>
-	    </div>
+	   
+      <div>
+        <PrivateRoute exact path="/" component={SignIn}/>
+      </div>
 	  </Router>
     );
   }
