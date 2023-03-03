@@ -37,6 +37,15 @@ app.post('/api/loadUserSettings', (req, res) => {
 });
 
 
+app.post('/api/getSessions', (req, res) => {
+	let connection = mysql.createConnection(config);
+	let sql = "SELECT * FROM sessions";
+	connection.query(sql, function (err, result, fields) {
+		if (err) throw err;
+		res.send({ results: result });
+	});
+	connection.end();
+});
 
 app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
 //app.listen(port, '129.97.25.211'); //for the deployed version, specify the IP address of the server
