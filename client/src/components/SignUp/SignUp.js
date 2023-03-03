@@ -19,6 +19,8 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import history from '../Navigation/history'
 
+const serverURL = "";
+
 const { palette } = createTheme();
 const { augmentColor } = palette;
 const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
@@ -28,38 +30,64 @@ const theme = createTheme({
   },
 });
 
+const postData = { 'firstName': null, 'lastName': null, 'email': null, 'password': null, 'gender': null };
 
 
 export default function SignUp() {
   const [error, setError] = React.useState(false);
-  const [snackError,setSnackError] = React.useState(false);
+  const [snackError, setSnackError] = React.useState(false);
 
   const handleClose = () => {
     setSnackError(false);
   }
 
+  const signUp = (signUp) => {
+    callApiSignUp(signUp)
+        .then(res => {
+        })
+}
+
+const callApiSignUp = async (signUp) => {
+    const url = serverURL + "/api/signUp";
+    console.log(url);
+    const response = await fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            //authorization: `Bearer ${this.state.token}`
+        },
+        body: JSON.stringify({
+            data: signUp
+        })
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    console.log('something')
+    return body;
+}
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    
     let x = data.get('email');
     let y = data.get('password');
     let z = data.get('firstName');
     let w = data.get('lastName');
     let v = data.get('gender');
-    if (x == "" ||y == ""||z == ""||w == ""||v == null) {
+    if (x == "" || y == "" || z == "" || w == "" || v == null) {
       setError(true);
       setSnackError(true);
       return false;
     }
- 
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-      firstName: data.get('firstName'),
-      lastName: data.get('lastName'),
-      gender: data.get('gender')
-    });
+    postData.firstName = z;
+    postData.lastName = w;
+    postData.email = x;
+    postData.password = y;
+    postData.gender = v;
+    console.log(postData);
     history.push('/')
+    signUp(postData);
   };
 
   return (
@@ -134,12 +162,12 @@ export default function SignUp() {
               <FormControl>
                 <FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel>
                 <RadioGroup
-                row
-                aria-labelledby="demo-radio-buttons-group-label"
-                error={error}
-                name="gender"
-                label="gender"
-                id="gender"
+                  row
+                  aria-labelledby="demo-radio-buttons-group-label"
+                  error={error}
+                  name="gender"
+                  label="gender"
+                  id="gender"
                 >
                   <FormControlLabel value="female" control={<Radio />} label="Female" />
                   <FormControlLabel value="male" control={<Radio />} label="Male" />
@@ -152,7 +180,7 @@ export default function SignUp() {
               fullWidth
               variant="contained"
               color="black"
-              sx={{ mt: 3, mb: 2 , color:'#FFD700'}}
+              sx={{ mt: 3, mb: 2, color: '#FFD700' }}
             >
               Sign Up
             </Button>
@@ -163,9 +191,9 @@ export default function SignUp() {
                 </Link>
               </Grid>
               <Grid item>
-              <Snackbar open={snackError} onClose={handleClose} autoHideDuration={3000} >
-              <Alert variant="filled" severity="error">Please fill out missing fields</Alert>
-            </Snackbar>
+                <Snackbar open={snackError} onClose={handleClose} autoHideDuration={3000} >
+                  <Alert variant="filled" severity="error">Please fill out missing fields</Alert>
+                </Snackbar>
               </Grid>
             </Grid>
 

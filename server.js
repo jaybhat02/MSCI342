@@ -36,7 +36,43 @@ app.post('/api/loadUserSettings', (req, res) => {
 	connection.end();
 });
 
+//Select email,password where email=(?) AND password=(?);
 
 
+app.post('/api/addSession', (req, res) => {
+	console.log("here")
+	var session = req.body;
+	console.log(session)
+	let connection = mysql.createConnection(config);
+	let sql = 'INSERT INTO sessions (sport, location, level, max_players, session_description, date_and_time) VALUES ?';
+	var values = [Object.values(session.data)];
+	console.log(values);
+	connection.query(sql, [values], (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+
+		res.send({ express: results });
+	});
+	connection.end();
+});
+
+app.post('/api/SignUp', (req, res) => {
+	console.log("here")
+	var signUp = req.body;
+	console.log(signUp)
+	let connection = mysql.createConnection(config);
+	let sql = 'INSERT INTO users (first_name, last_name, user_email, user_password, user_gender) VALUES ?';
+	var values = [Object.values(signUp.data)];
+	console.log(values);
+	connection.query(sql, [values], (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+
+		res.send({ express: results });
+	});
+	connection.end();
+});
 app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
 //app.listen(port, '129.97.25.211'); //for the deployed version, specify the IP address of the server
