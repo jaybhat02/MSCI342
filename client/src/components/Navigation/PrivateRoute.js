@@ -4,6 +4,7 @@ import Home from '../Home/Home';
 import history from './history';
 import SignUp from '../SignUp/SignUp';
 import SignIn from "../SignIn/SignIn";
+import AddSession from "../AddSession/AddSession";
 
 export default function PrivateRoute({
   //authenticated,
@@ -15,8 +16,7 @@ export default function PrivateRoute({
       <Switch>
       <Route exact path="/" component={SignIn}/>
       <Route path="/Home" exact component={Home} />
-
-      
+      <Route path="/AddSession" exact component={AddSession} />
       <Route exact path="/SignUp" component={SignUp}/>
       </Switch>
     </Router>

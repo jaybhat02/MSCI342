@@ -9,6 +9,7 @@ import Home from '../Home/Home';
 import PrivateRoute from '../Navigation/PrivateRoute.js';
 import SignIn from '../SignIn/SignIn';
 import SignUp from '../SignUp/SignUp';
+import AddSession from '../AddSession/AddSession';
 
 
 
