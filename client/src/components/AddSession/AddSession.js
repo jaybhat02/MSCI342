@@ -17,6 +17,8 @@ import Chip from '@material-ui/core/Chip';
 import Datetime from 'react-datetime';
 import "react-datetime/css/react-datetime.css";
 
+const serverURL = "";
+
 const lightTheme = createTheme({
     palette: {
         type: 'light',
@@ -41,7 +43,7 @@ const AddSession = () => {
     const [open, setOpen] = React.useState(false);
     const [date, setDate] = React.useState();
     const [maxPlayers, setMaxPlayers] = React.useState(2);
-    const [desciption, setDesciption] = React.useState('');
+    const [description, setDescription] = React.useState('');
     const [sport, setSport] = React.useState();
     const [location, setLocation] = React.useState();
     const [level, setLevel] = React.useState();
@@ -50,7 +52,7 @@ const AddSession = () => {
     const sportsList = ['Soccer', 'Basketball', 'Volleyball'];
     const locationList = ['PAC', 'CIF'];
     const levelList = ['Beginner', 'Intermediate', 'Competitive'];
-    const postData = { 'sport': null, 'location': null, 'level': null, 'maxPlayers': null, 'desciption': null, 'date': null };
+    const postData = { 'sport': null, 'location': null, 'level': null, 'maxPlayers': null, 'description': null, 'date': null };
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -60,7 +62,7 @@ const AddSession = () => {
         setOpen(false);
         setDate();
         setMaxPlayers();
-        setDesciption();
+        setDescription();
         setSport();
         setLocation();
         setLevel();
@@ -72,7 +74,7 @@ const AddSession = () => {
     };
 
     const handleDescChange = (event) => {
-        setDesciption(event.target.value);
+        setDescription(event.target.value);
     };
 
     const handleSportChange = (event) => {
@@ -91,19 +93,49 @@ const AddSession = () => {
         setDate(new Date(moment));
     };
 
+    const addSession = (session) => {
+        callApiAddSession(session)
+            .then(res => {
+            })
+    }
+
+    const callApiAddSession = async (session) => {
+        const url = serverURL + "/api/addSession";
+        console.log(url);
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                //authorization: `Bearer ${this.state.token}`
+            },
+            body: JSON.stringify({
+                data: session
+            })
+        });
+        const body = await response.json();
+        if (response.status !== 200) throw Error(body.message);
+        console.log('something')
+        return body;
+    }
+
     const handleSubmit = () => {
-        if (desciption && maxPlayers && level && location && sport && date) {
-            postData.desciption = desciption;
+        console.log("here")
+        if (description && maxPlayers && level && location && sport && date) {
+
+            postData.description = description;
             postData.maxPlayers = maxPlayers;
             postData.level = level;
             postData.location = location;
             postData.sport = sport;
             postData.date = date.toLocaleString();
             console.log(postData);
+            addSession(postData);
             handleClose();
-        } else{
+        } else {
             setRequiredField(false);
         }
+
+
     };
 
     return (
@@ -162,11 +194,11 @@ const AddSession = () => {
                         </Box>
 
                         <Box sx={{ padding: '2vh' }}>
-                            <TextField value={desciption} id="desciption" label="Desciption" onChange={handleDescChange} multiline fullWidth rows={4} />
+                            <TextField value={description} id="description" label="Description" onChange={handleDescChange} multiline fullWidth rows={4} />
                         </Box>
                     </Box>
 
-                    <Box sx={{ textAlign: 'center'}} hidden={requiredField}>
+                    <Box sx={{ textAlign: 'center' }} hidden={requiredField}>
                         <Chip color="secondary" label="Make sure all fields are filled in" />
                     </Box>
                 </DialogContent>
