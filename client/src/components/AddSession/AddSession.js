@@ -15,7 +15,7 @@ import Box from '@material-ui/core/Box';
 import Chip from '@material-ui/core/Chip';
 
 import Datetime from 'react-datetime';
-import "react-datetime/css/react-datetime.css";
+// import "react-datetime/css/react-datetime.css";
 
 const serverURL = "";
 
@@ -114,7 +114,7 @@ const AddSession = () => {
         });
         const body = await response.json();
         if (response.status !== 200) throw Error(body.message);
-        console.log('something')
+        console.log(body);
         return body;
     }
 
@@ -140,10 +140,10 @@ const AddSession = () => {
 
     return (
         <ThemeProvider theme={lightTheme}>
-            <Button variant="outlined" onClick={handleClickOpen}>
+            <Button variant="outlined" data-testid="addSessionButton" onClick={handleClickOpen}>
                 Add New Game Session
             </Button>
-            <Dialog open={open} fullWidth >
+            <Dialog open={open} data-testid="addSessionModal" fullWidth >
                 <DialogTitle>Add New Game Session</DialogTitle>
                 <DialogContent>
                     <Box sx={{ textAlign: 'center', height: '65vh' }}>
@@ -199,12 +199,12 @@ const AddSession = () => {
                     </Box>
 
                     <Box sx={{ textAlign: 'center' }} hidden={requiredField}>
-                        <Chip color="secondary" label="Make sure all fields are filled in" />
+                        <Chip color="secondary" data-testid="requiredFields" label="Make sure all fields are filled in" />
                     </Box>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={handleSubmit}>Submit</Button>
+                    <Button onClick={handleClose} data-testid="closeButton">Cancel</Button>
+                    <Button onClick={handleSubmit} data-testid="submitButton">Submit</Button>
                 </DialogActions>
             </Dialog>
 
