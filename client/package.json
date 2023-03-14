@@ -41,6 +41,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "jest",
+    "cypress": "cypress open",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -63,7 +64,6 @@
     "@babel/preset-react": "^7.18.6",
     "@testing-library/react": "^12.1.2",
     "babel-jest": "^24.9.0",
-    "cypress": "^10.9.0",
     "jest": "^24.9.0",
     "react-dom": "^16.8.6",
     "react-test-renderer": "^16.8.6",
