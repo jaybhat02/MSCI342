@@ -5,6 +5,10 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Box from '@material-ui/core/Box';
+import Filter from '../Filter/Filter';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import "./SessionList.css";
 
 
 //const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3049";
@@ -40,6 +44,10 @@ const lightTheme = createTheme({
 const SessionList = () => {
     const [sessionList, setSessionList] = React.useState([]);
     const [loading, setLoading] = React.useState(true);
+    const [originalSessionList, setOriginalSessionList] = React.useState([]);
+    const [filters, setFilters] = React.useState();
+    const [reset, setReset] = React.useState(false);
+
 
     React.useEffect(() => {
         loadSessions();
@@ -50,9 +58,33 @@ const SessionList = () => {
             .then(res => {
                 console.log(res.results);
                 setLoading(false);
+                setOriginalSessionList(res.results);
                 setSessionList(res.results);
             })
     }
+
+    const handleSeach = () => {
+        console.log(filters)
+        var modifiedList = originalSessionList;
+        const filteredRows = modifiedList.filter((row) => {
+            for (var key in filters) {
+                if (key == "date_and_time") {
+                    if (!sameDay(row[key], filters[key])){
+                        return false;
+                    }
+                } else if (row[key] === undefined || row[key].toLowerCase() != filters[key].toLowerCase()) {
+                    return false;
+                }
+            }
+            return true;
+        });
+        setSessionList(filteredRows);
+    };
+
+    const handleReset = () => {
+        setReset(true);
+        setSessionList(originalSessionList);
+    };
 
     const callApiLoadSessions = async () => {
         const url = serverURL + "/api/getSessions";
@@ -68,26 +100,43 @@ const SessionList = () => {
         return body;
     }
 
+    function sameDay(date1, date2) {
+        var d1 = new Date(date1)
+        var d2 = new Date(date2)
+        return d1.getFullYear() === d2.getFullYear() &&
+            d1.getMonth() === d2.getMonth() &&
+            d1.getDate() === d2.getDate() + 1;
+    }
 
     return (
         <ThemeProvider theme={lightTheme}>
-            {loading && (
-            <Box sx={{textAlign:'center'}} width='100%'>
-                <CircularProgress color='secondary'/>
+            <Box sx={{ textAlign: 'right' }}>
+                <Box sx={{ marginRight: '10px' }} display='inline'>
+                    <Filter setFilters={setFilters} reset = {reset} setReset={setReset}/>
+                </Box>
+                <Box sx={{ marginRight: '10px' }} display='inline'>
+                    <Button variant="contained" color="primary" onClick={handleSeach}> Search </Button>
+                </Box>
+                <Box sx={{ marginRight: '10px' }} display='inline'>
+                    <Button variant="outlined" color="primary" onClick={handleReset}> Reset </Button>
+                </Box>
             </Box>
+            {loading && (
+                <Box sx={{ textAlign: 'center' }} width='100%'>
+                    <CircularProgress color='secondary' />
+                </Box>
             )}
             <List list={sessionList} />
+
         </ThemeProvider>
     )
 }
 const List = (props) => {
     return (
-        <ul>
+        <Grid container spacing={3} width='80%' style={{ marginTop: 30, textAlign: 'center' }} id="container">
             {props.list.map((item) => {
                 return (
-                    <StyledPaper style={{
-                        width: '94%',
-                    }} key={item.title}>
+                    <Grid item xs={6} id="containersmall">
                         <CardContent>
                             <Typography color="textSecondary" >
                                 {item.level}
@@ -102,10 +151,10 @@ const List = (props) => {
                                 Desciption: {item.session_description}
                             </Typography>
                         </CardContent>
-                    </StyledPaper>
+                    </Grid>
                 );
             })}
-        </ul>
+        </Grid >
     )
 }
 

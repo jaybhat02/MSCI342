@@ -15,7 +15,7 @@ import Box from '@material-ui/core/Box';
 import Chip from '@material-ui/core/Chip';
 
 import Datetime from 'react-datetime';
-// import "react-datetime/css/react-datetime.css";
+import "react-datetime/css/react-datetime.css";
 
 const serverURL = "";
 
@@ -174,7 +174,7 @@ const AddSession = () => {
                         <Box sx={{ padding: '2vh' }}>
                             <FormControl variant="outlined" fullWidth>
                                 <InputLabel>Select Level</InputLabel>
-                                <Select native value={level} onChange={handelLevelChange} label="Select Level" id={"level"} autoWidth>
+                                <Select native value={level} onChange={handelLevelChange} label="Select Level" id={"level"} autoWidth >
                                     <option value=""></option>
                                     {levelList.map((level) => (
                                         <option key={level} value={level}>{level}</option>
