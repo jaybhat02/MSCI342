@@ -48,6 +48,29 @@ app.post('/api/getSessions', (req, res) => {
 	connection.end();
 });
 
+app.post('/api/getInfo', (req, res) => {
+	console.log("getting info")
+	var info = req.body;
+	console.log(info);
+	console.log(info.email);
+	let connection = mysql.createConnection(config);
+	let sql='SELECT * FROM users WHERE user_email = ? AND user_password = ? ;'
+	// let sql = 'SELECT * FROM users WHERE user_email = \''+JSON.stringify(req.body.email)+'\' AND user_password = \''+JSON.stringify(req.body.password)+'\';';
+	var values = [info.data.email, info.data.password];
+	console.log(values);
+	
+	connection.query(sql, values, function (error, result, fields) {
+		console.log(sql);
+		if (error) {
+			console.error(error.message);
+			return { status: "fail" };
+		}
+
+		res.send({ results: result });
+	});
+	connection.end();
+});
+
 app.post('/api/addSession', (req, res) => {
 	console.log("here")
 	var session = req.body;
