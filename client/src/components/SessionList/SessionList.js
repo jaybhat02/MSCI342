@@ -133,11 +133,11 @@ const SessionList = () => {
 }
 const List = (props) => {
     return (
-        <Grid container spacing={3} width='80%' style={{ marginTop: 30, textAlign: 'center' }} id="container">
+        <Grid container spacing={6} style={{ marginTop: 50, textAlign: 'center' }} id="container">
             {props.list.map((item) => {
                 return (
-                    <Grid item xs={6} id="containersmall">
-                        <CardContent>
+                    <Grid item sm={4} >
+                        <CardContent id="containersmall">
                             <Typography color="textSecondary" >
                                 {item.level}
                             </Typography>
