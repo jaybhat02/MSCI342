@@ -8,7 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import { ThemeProvider, styled } from '@material-ui/core/styles';
 import SessionList from '../SessionList/SessionList';
 import AddSession from '../AddSession/AddSession';
-
+import Navbar from '../Navbar/Navbar';
 
 //Dev mode
 const serverURL = ""; //enable for dev mode
@@ -133,6 +133,7 @@ const Review = () => {
 
   return (
     <ThemeProvider theme={lightTheme}>
+      <Navbar/>
       <Grid container spacing={3} style={{ padding: '25px' }}>
 
         <Grid item xs={12}>
