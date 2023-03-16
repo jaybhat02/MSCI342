@@ -25,6 +25,8 @@ const fetch = require("node-fetch");
 
 const opacityValue = 0.9;
 
+
+
 const lightTheme = createTheme({
   palette: {
     type: 'light',
@@ -76,6 +78,7 @@ const styles = theme => ({
 });
 
 
+
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -85,6 +88,10 @@ class Home extends Component {
     }
   };
 
+  
+
+
+  
   componentDidMount() {
     //this.loadUserSettings();
   }
@@ -120,8 +127,14 @@ class Home extends Component {
   }
 
   render() {
-
-
+    // const [profile,setProfile]=React.useState();
+    // setProfile(JSON.parse(localStorage.getItem("profile")));
+    // console.log(profile);
+    // localStorage.clear();
+    let Profile=localStorage.getItem("profile");
+    console.log(JSON.parse(Profile));
+    // setProfile(getProfile);
+    // console.log(profile);
     return (
       <div>
         <Review />
