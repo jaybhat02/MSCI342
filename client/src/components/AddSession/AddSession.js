@@ -39,7 +39,7 @@ const lightTheme = createTheme({
     },
 });
 
-const AddSession = () => {
+const AddSession = (props) => {
     const [open, setOpen] = React.useState(false);
     const [date, setDate] = React.useState();
     const [maxPlayers, setMaxPlayers] = React.useState(2);
@@ -52,7 +52,7 @@ const AddSession = () => {
     const sportsList = ['Soccer', 'Basketball', 'Volleyball'];
     const locationList = ['PAC', 'CIF'];
     const levelList = ['Beginner', 'Intermediate', 'Competitive'];
-    const postData = { 'sport': null, 'location': null, 'level': null, 'maxPlayers': null, 'description': null, 'date': null };
+    const postData = { 'sport': null, 'location': null, 'level': null, 'maxPlayers': null, 'description': null, 'date': null};
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -99,6 +99,12 @@ const AddSession = () => {
             })
     }
 
+    const addSessionUser = (sessionID) => {
+        callApiAddSessionUser(sessionID)
+            .then(res => {
+            })
+    }
+
     const callApiAddSession = async (session) => {
         const url = serverURL + "/api/addSession";
         console.log(url);
@@ -109,7 +115,28 @@ const AddSession = () => {
                 //authorization: `Bearer ${this.state.token}`
             },
             body: JSON.stringify({
-                data: session
+                data: session,
+            })
+        });
+        const body = await response.json();
+        if (response.status !== 200) throw Error(body.message);
+        console.log(body);
+        addSessionUser(body.sessionID);
+        return body;
+    }
+
+    const callApiAddSessionUser = async (sessionID) => {
+        const url = serverURL + "/api/addSessionUser";
+        console.log(url);
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                //authorization: `Bearer ${this.state.token}`
+            },
+            body: JSON.stringify({
+                sessionID: sessionID,
+                profileID: props.profile,
             })
         });
         const body = await response.json();

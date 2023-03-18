@@ -53,13 +53,29 @@ const SessionList = () => {
         loadSessions();
     }, []);
 
+
     const loadSessions = () => {
         callApiLoadSessions()
             .then(res => {
-                console.log(res.results);
-                setLoading(false);
-                setOriginalSessionList(res.results);
-                setSessionList(res.results);
+                var sessionList = res.results;
+                
+                callApiLoadUserSessions()
+                    .then(res => {
+                        var userSessionList = res.results;
+                        for (var session in sessionList) {
+                            var targetID = sessionList[session].session_id;
+                            sessionList[session].players = [];
+                            for(var user in userSessionList){
+                                if(userSessionList[user].session_id === targetID){ 
+                                    sessionList[session].players.push(userSessionList[user]);
+                                }
+                            }
+                        }
+                        console.log(sessionList);
+                        setLoading(false);
+                        setOriginalSessionList(sessionList);
+                        setSessionList(sessionList);
+                    })
             })
     }
 
@@ -69,7 +85,7 @@ const SessionList = () => {
         const filteredRows = modifiedList.filter((row) => {
             for (var key in filters) {
                 if (key == "date_and_time") {
-                    if (!sameDay(row[key], filters[key])){
+                    if (!sameDay(row[key], filters[key])) {
                         return false;
                     }
                 } else if (row[key] === undefined || row[key].toLowerCase() != filters[key].toLowerCase()) {
@@ -99,6 +115,19 @@ const SessionList = () => {
         if (response.status !== 200) throw Error(body.message);
         return body;
     }
+    const callApiLoadUserSessions = async () => {
+        const url = serverURL + "/api/getUserSessions";
+        console.log(url);
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        });
+        const body = await response.json();
+        if (response.status !== 200) throw Error(body.message);
+        return body;
+    }
 
     function sameDay(date1, date2) {
         var d1 = new Date(date1)
@@ -112,7 +141,7 @@ const SessionList = () => {
         <ThemeProvider theme={lightTheme}>
             <Box sx={{ textAlign: 'right' }}>
                 <Box sx={{ marginRight: '10px' }} display='inline'>
-                    <Filter setFilters={setFilters} reset = {reset} setReset={setReset}/>
+                    <Filter setFilters={setFilters} reset={reset} setReset={setReset} />
                 </Box>
                 <Box sx={{ marginRight: '10px' }} display='inline'>
                     <Button variant="contained" color="primary" onClick={handleSeach}> Search </Button>

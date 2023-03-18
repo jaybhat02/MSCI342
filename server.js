@@ -48,17 +48,27 @@ app.post('/api/getSessions', (req, res) => {
 	connection.end();
 });
 
+app.post('/api/getUserSessions', (req, res) => {
+	let connection = mysql.createConnection(config);
+	let sql = "SELECT U.first_name, U.last_name, U.user_id, U.user_email, US.session_id FROM users U, user_sessions US WHERE U.user_id = US.user_id;";
+	connection.query(sql, function (err, result, fields) {
+		if (err) throw err;
+		res.send({ results: result });
+	});
+	connection.end();
+});
+
 app.post('/api/getInfo', (req, res) => {
 	console.log("getting info")
 	var info = req.body;
 	console.log(info);
 	console.log(info.email);
 	let connection = mysql.createConnection(config);
-	let sql='SELECT * FROM users WHERE user_email = ? AND user_password = ? ;'
+	let sql = 'SELECT * FROM users WHERE user_email = ? AND user_password = ? ;'
 	// let sql = 'SELECT * FROM users WHERE user_email = \''+JSON.stringify(req.body.email)+'\' AND user_password = \''+JSON.stringify(req.body.password)+'\';';
 	var values = [info.data.email, info.data.password];
 	console.log(values);
-	
+
 	connection.query(sql, values, function (error, result, fields) {
 		console.log(sql);
 		if (error) {
@@ -72,9 +82,8 @@ app.post('/api/getInfo', (req, res) => {
 });
 
 app.post('/api/addSession', (req, res) => {
-	console.log("here")
 	var session = req.body;
-	console.log(session)
+	var sessionID = 0;
 	let connection = mysql.createConnection(config);
 	let sql = 'INSERT INTO sessions (sport, location, level, max_players, session_description, date_and_time) VALUES ?';
 	var values = [Object.values(session.data)];
@@ -84,12 +93,39 @@ app.post('/api/addSession', (req, res) => {
 			console.error(error.message);
 			return { status: "fail" };
 		}
-
-		res.send({ status: "pass" });
 	});
+
+	let someQuery = 'SELECT session_id FROM sessions WHERE sport = ' + JSON.stringify(session.data.sport) + ' AND location = ' + JSON.stringify(session.data.location) + ' AND level = ' + JSON.stringify(session.data.level) + ' AND max_players = ' + JSON.stringify(session.data.maxPlayers) + ' AND session_description = ' + JSON.stringify(session.data.description) + ' AND date_and_time = ' + JSON.stringify(session.data.date) +';'
+	connection.query(someQuery, (error, results, fields) => {
+		if (error) {
+			console.error(error.message);
+			return { status: "fail" };
+		}
+		sessionID = results;
+		res.send({ status: "pass", sessionID: sessionID });
+	});
+	
 	connection.end();
 });
 
+app.post('/api/addSessionUser', (req, res) => {
+	var request = req.body;
+	var sessionID = request.sessionID[0].session_id;
+	var profileID = request.profileID.user_id;
+	let sql = 'INSERT INTO user_sessions (session_id, user_id) VALUES ?';
+	let connection = mysql.createConnection(config);
+	connection.query(sql, [[[sessionID, profileID]]], (error, results, fields) => {
+		if (error) {
+			console.error(error.message);
+			return { status: "fail" };
+		}
+	});
+
+	res.send({ status: "pass"});
+});
+
+
+//let postUserSession = 'INSERT INTO user_sessions (user_id, session_id) VALUES ?'
 app.post('/api/SignUp', (req, res) => {
 	console.log("here")
 	var signUp = req.body;
