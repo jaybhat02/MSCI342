@@ -145,8 +145,9 @@ class Home extends Component {
 const Review = () => {
   const [profile, setProfile] = React.useState();
   React.useEffect(() => {
-    let Profile = localStorage.getItem("profile");
-    setProfile(JSON.parse(Profile)[0])
+    let tempProfile = localStorage.getItem("profile");
+    console.log(JSON.parse(tempProfile)[0]);
+    setProfile(JSON.parse(tempProfile)[0])
   }, []);
   return (
     <ThemeProvider theme={lightTheme}>
@@ -168,7 +169,7 @@ const Review = () => {
         </Grid>
 
         <Grid item xs={12}>
-          <SessionList />
+          <SessionList profile={profile}/>
         </Grid>
 
 

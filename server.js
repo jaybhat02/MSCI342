@@ -119,9 +119,9 @@ app.post('/api/addSessionUser', (req, res) => {
 			console.error(error.message);
 			return { status: "fail" };
 		}
+		res.send({ status: "pass"});
 	});
 
-	res.send({ status: "pass"});
 });
 
 
@@ -143,5 +143,23 @@ app.post('/api/SignUp', (req, res) => {
 	});
 	connection.end();
 });
+
+app.post('/api/joinSession', (req, res) => {
+	var session = req.body;
+	
+	let connection = mysql.createConnection(config);
+	let sql = 'INSERT INTO user_sessions (session_id, user_id) VALUES ?';
+	var values = [Object.values(session.data)];
+	console.log(values);
+	connection.query(sql, [values], (error, results, fields) => {
+		if (error) {
+			console.error(error.message);
+			return { status: "fail" };
+		}
+		res.send({ status: "pass"});
+	});
+	connection.end();
+});
+
 app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
 //app.listen(port, '129.97.25.211'); //for the deployed version, specify the IP address of the server
