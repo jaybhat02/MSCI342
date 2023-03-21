@@ -88,10 +88,10 @@ class Home extends Component {
     }
   };
 
-  
 
 
-  
+
+
   componentDidMount() {
     //this.loadUserSettings();
   }
@@ -131,7 +131,7 @@ class Home extends Component {
     // setProfile(JSON.parse(localStorage.getItem("profile")));
     // console.log(profile);
     // localStorage.clear();
-    let Profile=localStorage.getItem("profile");
+    let Profile = localStorage.getItem("profile");
     console.log(JSON.parse(Profile));
     // setProfile(getProfile);
     // console.log(profile);
@@ -143,10 +143,15 @@ class Home extends Component {
   }
 }
 const Review = () => {
-
+  const [profile, setProfile] = React.useState();
+  React.useEffect(() => {
+    let tempProfile = localStorage.getItem("profile");
+    console.log(JSON.parse(tempProfile)[0]);
+    setProfile(JSON.parse(tempProfile)[0])
+  }, []);
   return (
     <ThemeProvider theme={lightTheme}>
-      <Navbar/>
+      <Navbar />
       <Grid container spacing={3} style={{ padding: '25px' }}>
 
         <Grid item xs={12}>
@@ -160,14 +165,14 @@ const Review = () => {
         </Grid>
 
         <Grid item xs={12}>
-          <AddSession />
+          <AddSession profile={profile}/>
         </Grid>
 
         <Grid item xs={12}>
-          <SessionList />
+          <SessionList profile={profile}/>
         </Grid>
-        
-        
+
+
 
       </Grid >
 

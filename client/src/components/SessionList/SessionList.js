@@ -9,7 +9,7 @@ import Filter from '../Filter/Filter';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import "./SessionList.css";
-
+import DetailSession from '../DetailSession/DetailSession';
 
 //const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3049";
 const serverURL = "";
@@ -41,7 +41,7 @@ const lightTheme = createTheme({
     },
 });
 
-const SessionList = () => {
+const SessionList = (props) => {
     const [sessionList, setSessionList] = React.useState([]);
     const [loading, setLoading] = React.useState(true);
     const [originalSessionList, setOriginalSessionList] = React.useState([]);
@@ -53,13 +53,29 @@ const SessionList = () => {
         loadSessions();
     }, []);
 
+
     const loadSessions = () => {
         callApiLoadSessions()
             .then(res => {
-                console.log(res.results);
-                setLoading(false);
-                setOriginalSessionList(res.results);
-                setSessionList(res.results);
+                var sessionList = res.results;
+
+                callApiLoadUserSessions()
+                    .then(res => {
+                        var userSessionList = res.results;
+                        for (var session in sessionList) {
+                            var targetID = sessionList[session].session_id;
+                            sessionList[session].players = [];
+                            for (var user in userSessionList) {
+                                if (userSessionList[user].session_id === targetID) {
+                                    sessionList[session].players.push(userSessionList[user]);
+                                }
+                            }
+                        }
+                        console.log(sessionList);
+                        setLoading(false);
+                        setOriginalSessionList(sessionList);
+                        setSessionList(sessionList);
+                    })
             })
     }
 
@@ -69,7 +85,7 @@ const SessionList = () => {
         const filteredRows = modifiedList.filter((row) => {
             for (var key in filters) {
                 if (key == "date_and_time") {
-                    if (!sameDay(row[key], filters[key])){
+                    if (!sameDay(row[key], filters[key])) {
                         return false;
                     }
                 } else if (row[key] === undefined || row[key].toLowerCase() != filters[key].toLowerCase()) {
@@ -99,6 +115,19 @@ const SessionList = () => {
         if (response.status !== 200) throw Error(body.message);
         return body;
     }
+    const callApiLoadUserSessions = async () => {
+        const url = serverURL + "/api/getUserSessions";
+        console.log(url);
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        });
+        const body = await response.json();
+        if (response.status !== 200) throw Error(body.message);
+        return body;
+    }
 
     function sameDay(date1, date2) {
         var d1 = new Date(date1)
@@ -112,7 +141,7 @@ const SessionList = () => {
         <ThemeProvider theme={lightTheme}>
             <Box sx={{ textAlign: 'right' }}>
                 <Box sx={{ marginRight: '10px' }} display='inline'>
-                    <Filter setFilters={setFilters} reset = {reset} setReset={setReset}/>
+                    <Filter setFilters={setFilters} reset={reset} setReset={setReset} />
                 </Box>
                 <Box sx={{ marginRight: '10px' }} display='inline'>
                     <Button variant="contained" color="primary" onClick={handleSeach}> Search </Button>
@@ -126,30 +155,31 @@ const SessionList = () => {
                     <CircularProgress color='secondary' />
                 </Box>
             )}
-            <List list={sessionList} />
+            <List list={sessionList} profile={props.profile} />
 
         </ThemeProvider>
     )
 }
 const List = (props) => {
+
     return (
         <Grid container spacing={6} style={{ marginTop: 50, textAlign: 'center' }} id="container">
             {props.list.map((item) => {
                 return (
                     <Grid item sm={4} >
                         <CardContent id="containersmall">
-                            <Typography color="textSecondary" >
-                                {item.level}
-                            </Typography>
                             <Typography variant="h5" component="h2">
                                 {item.sport}
                             </Typography>
+                            <Typography color="textSecondary" >
+                                {item.level}
+                            </Typography>
                             <Typography color="textSecondary">
-                                {item.location} at {item.date_and_time}: MAX {item.max_players} Players
+                                {item.location} at {item.date_and_time}
                             </Typography>
-                            <Typography variant="body2" component="p">
-                                Desciption: {item.session_description}
-                            </Typography>
+                            <Box marginTop={2} >
+                                <DetailSession item={item} profile={props.profile} />
+                            </Box>
                         </CardContent>
                     </Grid>
                 );
