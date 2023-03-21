@@ -35,7 +35,10 @@ const lightTheme = createTheme({
 });
 
 const NavigationBar = (props) => {
-
+    const signOut= async ()=>{
+        localStorage.setItem("profile",[["null"]]);
+        history.push("/");
+    }
     return (
         <div>
             <AppBar position="static" style={{ backgroundColor: "#000000", color: "rgb(251, 178, 0)" }}>
@@ -65,6 +68,15 @@ const NavigationBar = (props) => {
                     >
                         <Typography variant="body1" component="div" sx={{ flexGrow: 1 }}>
                             Previous
+                        </Typography>
+                    </Link>
+                    <Link
+                        color="inherit"
+                        style={{ cursor: "pointer", margin: '20px' , right:0}}
+                        onClick={signOut}
+                        >
+                        <Typography variant="body1" component="div" sx={{ flexGrow: 1 }}>
+                            Sign Out
                         </Typography>
                     </Link>
 
