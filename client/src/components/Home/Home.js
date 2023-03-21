@@ -3,12 +3,16 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
+import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import history from '../Navigation/history';
+import "./Home.css";
+
 import { ThemeProvider, styled } from '@material-ui/core/styles';
 import SessionList from '../SessionList/SessionList';
 import AddSession from '../AddSession/AddSession';
 import Navbar from '../Navbar/Navbar';
+import { max } from 'moment';
 
 //Dev mode
 const serverURL = ""; //enable for dev mode
@@ -45,6 +49,9 @@ const lightTheme = createTheme({
       dark: '#7f0000'
     },
   },
+  typography: {
+    fontFamily: ["Open Sans, sans-serif"].join(",")
+  }
 });
 
 const styles = theme => ({
@@ -178,30 +185,28 @@ const Review = () => {
   return (
     <ThemeProvider theme={lightTheme}>
       <Navbar />
-      <Grid container spacing={3} style={{ padding: '25px' }}>
+      <Container maxWidth style={{ overflow: 'scroll', backgroundColor: "rgb(253, 253, 253)", position: 'fixed', width: '100%', height: '100%' }}>
+        <Grid container spacing={3} style={{ padding: '25px' }} >
+          <Grid item xs={12}>
 
-        <Grid item xs={12}>
+            <Typography id='head'>
+              GameTime
+            </Typography>
 
-          <Typography variant="h3" color='secondary' style={{
-            textAlign: 'center',
-          }}>
-            GameTime
-          </Typography>
+          </Grid>
 
-        </Grid>
+          <Grid item xs={12}>
+            <AddSession profile={profile} />
+          </Grid>
 
-        <Grid item xs={12}>
-          <AddSession profile={profile}/>
-        </Grid>
-
-        <Grid item xs={12}>
-          <SessionList profile={profile}/>
-        </Grid>
+          <Grid item xs={12}>
+            <SessionList profile={profile} />
+          </Grid>
 
 
 
-      </Grid >
-
+        </Grid >
+      </Container>
     </ThemeProvider>
   );
 }

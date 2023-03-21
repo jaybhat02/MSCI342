@@ -13,6 +13,7 @@ import Slider from '@material-ui/core/Slider';
 import TextField from '@material-ui/core/TextField';
 import Box from '@material-ui/core/Box';
 import Chip from '@material-ui/core/Chip';
+import "./Filter.css";
 
 const serverURL = "";
 
@@ -29,11 +30,14 @@ const lightTheme = createTheme({
             background: '#e1f1fd'
         },
         secondary: {
-            main: "#ffd700",
+            main: "rgb(251, 178, 0)",
             light: '#f05545',
             dark: '#7f0000'
         },
     },
+    typography: {
+        fontFamily: ["Open Sans, sans-serif"].join(",")
+    }
 });
 
 const Filter = (props) => {
@@ -80,33 +84,41 @@ const Filter = (props) => {
 
 
     return (
-        <ThemeProvider theme={lightTheme}>
+        <ThemeProvider theme={lightTheme} >
             <Box sx={{ marginRight: '10px' }} display='inline'>
-                <TextField id="date" type="date" onChange={handleDateChange} value={date} />
+                <FormControl variant='outlined' >
+                    <TextField variant='outlined' id="date" type="date" onChange={handleDateChange} value={date} style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000", width: '150px', borderRadius: '3px' }} />
+                </FormControl>
+            </Box>
+            <Box sx={{ marginRight: '10px', height: '10px' }} display='inline'>
+                <FormControl variant='outlined' >
+                    <Select native value={sport} onChange={handleSportChange} id="sport" autoWidth style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000", height: '42px' }} >
+                        <option value=""></option>
+                        {sportsList.map((sport) => (
+                            <option key={sport} value={sport}>{sport}</option>
+                        ))}
+                    </Select>
+                </FormControl>
             </Box>
             <Box sx={{ marginRight: '10px' }} display='inline'>
-                <Select native value={sport} onChange={handleSportChange} label="Select Sport" id="sport" autoWidth >
-                    <option value=""></option>
-                    {sportsList.map((sport) => (
-                        <option key={sport} value={sport}>{sport}</option>
-                    ))}
-                </Select>
+                <FormControl variant='outlined' >
+                    <Select native value={location} onChange={handleLocationChange} label="Select Location" id={"location"} autoWidth style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000", height: '42px' }}>
+                        <option value=""></option>
+                        {locationList.map((location) => (
+                            <option key={location} value={location}>{location}</option>
+                        ))}
+                    </Select>
+                </FormControl>
             </Box>
             <Box sx={{ marginRight: '10px' }} display='inline'>
-                <Select native value={location} onChange={handleLocationChange} label="Select Location" id={"location"} autoWidth>
-                    <option value=""></option>
-                    {locationList.map((location) => (
-                        <option key={location} value={location}>{location}</option>
-                    ))}
-                </Select>
-            </Box>
-            <Box sx={{ marginRight: '10px' }} display='inline'>
-                <Select native value={level} onChange={handelLevelChange} label="Select Level" id={"level"} autoWidth>
-                    <option value=""></option>
-                    {levelList.map((level) => (
-                        <option key={level} value={level}>{level}</option>
-                    ))}
-                </Select>
+                <FormControl variant='outlined' >
+                    <Select native value={level} onChange={handelLevelChange} label="Select Level" id={"level"} autoWidth style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000", height: '42px' }}>
+                        <option value=""></option>
+                        {levelList.map((level) => (
+                            <option key={level} value={level}>{level}</option>
+                        ))}
+                    </Select>
+                </FormControl>
             </Box>
 
         </ThemeProvider >

@@ -34,11 +34,14 @@ const lightTheme = createTheme({
             background: '#e8d596'
         },
         secondary: {
-            main: "#FFD700",
+            main: "rgb(251, 178, 0)",
             light: '#f05545',
             dark: '#7f0000'
         },
     },
+    typography: {
+        fontFamily: ["Open Sans, sans-serif"].join(",")
+    }
 });
 
 const SessionList = (props) => {
@@ -144,10 +147,10 @@ const SessionList = (props) => {
                     <Filter setFilters={setFilters} reset={reset} setReset={setReset} />
                 </Box>
                 <Box sx={{ marginRight: '10px' }} display='inline'>
-                    <Button variant="contained" color="primary" onClick={handleSeach}> Search </Button>
+                    <Button variant="contained" onClick={handleSeach} style={{ backgroundColor: "#000000", color: "rgb(251, 178, 0)" }}> Search </Button>
                 </Box>
                 <Box sx={{ marginRight: '10px' }} display='inline'>
-                    <Button variant="outlined" color="primary" onClick={handleReset}> Reset </Button>
+                    <Button variant="outlined" onClick={handleReset} style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000" }}> Reset </Button>
                 </Box>
             </Box>
             {loading && (

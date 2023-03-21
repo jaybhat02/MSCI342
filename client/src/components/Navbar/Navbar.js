@@ -24,11 +24,14 @@ const lightTheme = createTheme({
             background: '#e1f1fd'
         },
         secondary: {
-            main: "#ffd700",
+            main: "rgb(251, 178, 0)",
             light: '#f05545',
             dark: '#7f0000'
         },
     },
+    typography: {
+        fontFamily: ["Open Sans, sans-serif"].join(",")
+    }
 });
 
 const NavigationBar = (props) => {
@@ -38,7 +41,7 @@ const NavigationBar = (props) => {
     }
     return (
         <div>
-            <AppBar position="static" color="primary">
+            <AppBar position="static" style={{ backgroundColor: "#000000", color: "rgb(251, 178, 0)" }}>
                 <Toolbar>
                     <Link
                         color="inherit"
@@ -52,7 +55,7 @@ const NavigationBar = (props) => {
                     <Link
                         color="inherit"
                         style={{ cursor: "pointer", margin: '20px' }}
-                        onClick={() => history.push('/Upcoming')}
+                        
                     >
                         <Typography variant="body1" component="div" sx={{ flexGrow: 1 }}>
                             Upcoming
@@ -61,7 +64,7 @@ const NavigationBar = (props) => {
                     <Link
                         color="inherit"
                         style={{ cursor: "pointer", margin: '15px' }}
-                        onClick={() => history.push('/Previous')}
+                        
                     >
                         <Typography variant="body1" component="div" sx={{ flexGrow: 1 }}>
                             Previous

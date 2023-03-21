@@ -14,6 +14,7 @@ import TextField from '@material-ui/core/TextField';
 import Box from '@material-ui/core/Box';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import "./AddSession.css";
 
 
 const serverURL = "";
@@ -31,11 +32,14 @@ const lightTheme = createTheme({
             background: '#e1f1fd'
         },
         secondary: {
-            main: "#ffd700",
+            main: "rgb(251, 178, 0)",
             light: '#f05545',
             dark: '#7f0000'
         },
     },
+    typography: {
+        fontFamily: ["Open Sans, sans-serif"].join(",")
+    }
 });
 
 const AddSession = (props) => {
@@ -180,7 +184,7 @@ const AddSession = (props) => {
 
     return (
         <ThemeProvider theme={lightTheme}>
-            <Button variant="outlined" data-testid="addSessionButton" onClick={handleClickOpen}>
+            <Button variant="contained" data-testid="addSessionButton" onClick={handleClickOpen} style={{ backgroundColor: "#000000", color: "rgb(251, 178, 0)" }}>
                 Add New Game Session
             </Button>
             <Dialog open={open} data-testid="addSessionModal" fullWidth >
@@ -190,7 +194,7 @@ const AddSession = (props) => {
                         <Box sx={{ padding: '2vh' }}>
                             <FormControl variant="outlined" fullWidth>
                                 <InputLabel>Select Sport</InputLabel>
-                                <Select native value={sport} onChange={handleSportChange} label="Select Sport" id="sport" autoWidth>
+                                <Select native value={sport} onChange={handleSportChange} label="Select Sport" id="sport" autoWidth style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000"}}>
                                     <option value=""></option>
                                     {sportsList.map((sport) => (
                                         <option key={sport} value={sport}>{sport}</option>
@@ -202,7 +206,7 @@ const AddSession = (props) => {
                         <Box sx={{ padding: '2vh' }}>
                             <FormControl variant="outlined" fullWidth>
                                 <InputLabel>Select Location</InputLabel>
-                                <Select native value={location} onChange={handleLocationChange} label="Select Location" id={"location"} autoWidth>
+                                <Select native value={location} onChange={handleLocationChange} label="Select Location" id={"location"} autoWidth style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000"}}>
                                     <option value=""></option>
                                     {locationList.map((location) => (
                                         <option key={location} value={location}>{location}</option>
@@ -214,7 +218,7 @@ const AddSession = (props) => {
                         <Box sx={{ padding: '2vh' }}>
                             <FormControl variant="outlined" fullWidth>
                                 <InputLabel>Select Level</InputLabel>
-                                <Select native value={level} onChange={handelLevelChange} label="Select Level" id={"level"} autoWidth >
+                                <Select native value={level} onChange={handelLevelChange} label="Select Level" id={"level"} autoWidth style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000"}}>
                                     <option value=""></option>
                                     {levelList.map((level) => (
                                         <option key={level} value={level}>{level}</option>
@@ -225,23 +229,23 @@ const AddSession = (props) => {
 
                         <Box sx={{ padding: '2vh' }}>
                             <InputLabel>Select Date and Time</InputLabel>
-                            <TextField id="datetime-local" type="datetime-local" onChange={handleDateChange} />
+                            <TextField variant='outlined' id="date" type="datetime-local" onChange={handleDateChange} style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000"}}/>
                         </Box>
 
                         <Box sx={{ padding: '2vh' }}>
                             <InputLabel>Select Max Number of People</InputLabel>
-                            <Slider value={maxPlayers} onChange={handlePlayerChange} defaultValue={5} step={1} marks min={2} max={10} valueLabelDisplay="auto" />
+                            <Slider value={maxPlayers} onChange={handlePlayerChange} defaultValue={5} step={1} marks  min={2} max={10} valueLabelDisplay="auto" style={{ color: "#000000"}}/>
                         </Box>
 
                         <Box sx={{ padding: '2vh' }}>
-                            <TextField value={description} id="description" label="Description" onChange={handleDescChange} multiline fullWidth rows={4} />
+                            <TextField variant='outlined' value={description} id="description" label="Description" onChange={handleDescChange} multiline fullWidth rows={4} style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000"}}/>
                         </Box>
                     </Box>
 
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose} data-testid="closeButton">Cancel</Button>
-                    <Button onClick={handleSubmit} data-testid="submitButton">Submit</Button>
+                    <Button onClick={handleClose} data-testid="closeButton" style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000" }}>Close</Button>
+                    <Button onClick={handleSubmit} data-testid="submitButton" style={{ backgroundColor: "#000000", color: "rgb(251, 178, 0)" }}>Submit</Button>
                 </DialogActions>
             </Dialog>
             <Snackbar open={openError} autoHideDuration={6000} onClose={handleErrorClose}>
