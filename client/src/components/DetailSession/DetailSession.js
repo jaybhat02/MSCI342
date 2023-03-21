@@ -18,8 +18,10 @@ import Grid from '@material-ui/core/Grid';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
-import Datetime from 'react-datetime';
+
 import "./DetailSession.css";
 
 const serverURL = "";
@@ -61,6 +63,8 @@ const BorderLinearProgress = withStyles((theme) => ({
 const DetailSession = (props) => {
     const [open, setOpen] = React.useState(false);
     const [progress, setProgress] = React.useState(0);
+    const [openError, setOpenError] = React.useState(false);
+    const [openSuccess, setOpenSuccess] = React.useState(false);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -71,10 +75,11 @@ const DetailSession = (props) => {
     };
 
     const handleJoin = () => {
-        if(canJoin()){
+        if (canJoin()) {
+            setOpen(false);
             joinSessions();
         } else {
-            console.log("right here");
+            setOpenError(true);
         }
     };
 
@@ -103,10 +108,23 @@ const DetailSession = (props) => {
     const joinSessions = () => {
         callApiJoinSessions()
             .then(res => {
-                var sessionList = res.results;
+                setOpenSuccess(true);
             })
     }
+    const handleErrorClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            setOpenError(false);
+        }
 
+        setOpenError(false);
+    };
+    const handleSuccessClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            setOpenSuccess(false);
+        }
+
+        setOpenSuccess(false);
+    };
     const canJoin = () => {
         var userID = props.profile.user_id;
         var maxPlayers = props.item.max_players;
@@ -126,16 +144,19 @@ const DetailSession = (props) => {
             <Dialog open={open} fullWidth >
 
                 <DialogContent>
-                    <Typography variant="h5" component="h2">
+                    <Typography variant="h4" component="h2">
                         {props.item.sport}
                     </Typography>
-                    <Typography color="textSecondary" >
+                    <Typography variant="body1">
                         {props.item.level}
                     </Typography>
-                    <Typography color="textSecondary">
-                        {props.item.location} at {props.item.date_and_time}
+                    <Typography variant="body1">
+                        {props.item.location}
                     </Typography>
-                    <Typography variant="body2" component="p">
+                    <Typography variant="body1">
+                        {new Intl.DateTimeFormat('en-GB', { weekday: "short", year: 'numeric', month: 'long', day: 'numeric', hour: "numeric", minute: "numeric", hour12: true }).format(new Date(props.item.date_and_time))}
+                    </Typography>
+                    <Typography variant="body1" component="p">
                         Desciption: {props.item.session_description}
                     </Typography>
 
@@ -151,21 +172,17 @@ const DetailSession = (props) => {
                         null
                         :
                         <Grid item xs={12} md={6}>
-                            <Typography>
+                            <Typography variant="h6">
                                 Players Joined
                             </Typography>
-                            <List>
-                                {props.item.players.map((person) => {
-                                    return (
-                                        <ListItem>
-                                            <ListItemText
-                                                primary={person.first_name + " " + person.last_name}
-                                                secondary={person.user_email}
-                                            />
-                                        </ListItem>
-                                    );
-                                })}
-                            </List>
+                            {props.item.players.map((person) => {
+                                return (
+                                    <ListItemText
+                                        primary={person.first_name + " " + person.last_name}
+                                        secondary={person.user_email}
+                                    />
+                                );
+                            })}
                         </Grid>}
                 </DialogContent>
                 <DialogActions>
@@ -173,6 +190,16 @@ const DetailSession = (props) => {
                     <Button onClick={handleJoin} data-testid="closeButton" style={{ backgroundColor: "#000000", color: "rgb(251, 178, 0)" }}>Join</Button>
                 </DialogActions>
             </Dialog>
+            <Snackbar open={openError} autoHideDuration={6000} onClose={handleErrorClose}>
+                <MuiAlert onClose={handleErrorClose} severity="error">
+                    Cannot join session!
+                </MuiAlert>
+            </Snackbar>
+            <Snackbar open={openSuccess} autoHideDuration={6000} onClose={handleSuccessClose}>
+                <MuiAlert onClose={handleSuccessClose} severity="success">
+                    Joined session successfully!
+                </MuiAlert>
+            </Snackbar>
 
         </ThemeProvider >
     )

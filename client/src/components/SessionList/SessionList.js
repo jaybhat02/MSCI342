@@ -178,7 +178,7 @@ const List = (props) => {
                                 {item.level}
                             </Typography>
                             <Typography color="textSecondary">
-                                {item.location} at {item.date_and_time}
+                                {item.location} on {new Intl.DateTimeFormat('en-GB', { month: 'long', day: 'numeric', hour: "numeric", minute: "numeric", hour12: true }).format(new Date(item.date_and_time))}
                             </Typography>
                             <Box marginTop={2} >
                                 <DetailSession item={item} profile={props.profile} />
@@ -190,5 +190,4 @@ const List = (props) => {
         </Grid >
     )
 }
-
 export default SessionList;

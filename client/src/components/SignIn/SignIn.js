@@ -13,6 +13,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import history from "../Navigation/history";
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const serverURL = "";
 
@@ -32,6 +33,8 @@ export default function SignIn() {
   const [pError, setPError] = React.useState(false);
   const [checkInfo, setCheckInfo] = React.useState([{}]);
   const [snackError, setSnackError] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+
   var checkInfos = {};
 
   const getInfo = async (getInfo) => {
@@ -45,7 +48,7 @@ export default function SignIn() {
     });
   };
 
-  const saving = async (obj)=>{
+  const saving = async (obj) => {
     console.log(obj);
     localStorage.setItem("profile", JSON.stringify(obj));
     return localStorage.getItem("profile");
@@ -75,6 +78,7 @@ export default function SignIn() {
   };
 
   const handleSubmit = (event) => {
+    setLoading(true);
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     let x = data.get("email");
@@ -110,17 +114,19 @@ export default function SignIn() {
         setEError(true);
         setPError(true);
         setSnackError(true);
+        setLoading(false);
         return false;
       }
       if (res.results[0].user_email == x && res.results[0].user_password == y) {
-        saving(res.results).then((prof)=>{
+        saving(res.results).then((prof) => {
           console.log(localStorage.getItem("profile"))
+          setLoading(false);
           history.push("/Home");
         });
         // history.push("/Home");
-       
+
         //in page 2: const [profile, setProfile] = React.useState(localStorage.getItem(profile));
-        
+
       } else {
         return false;
       }
@@ -208,6 +214,11 @@ export default function SignIn() {
             </Grid>
           </Box>
         </Box>
+        {loading && (
+          <Box sx={{ textAlign: 'center', marginTop:"100px" }} width='100%'>
+            <CircularProgress style={{ color:"rgb(251, 178, 0)"  }}/>
+          </Box>
+        )}
       </Container>
     </ThemeProvider>
   );

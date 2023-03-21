@@ -92,7 +92,7 @@ const Filter = (props) => {
             </Box>
             <Box sx={{ marginRight: '10px', height: '10px' }} display='inline'>
                 <FormControl variant='outlined' >
-                    <Select native value={sport} onChange={handleSportChange} id="sport" autoWidth style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000", height: '37px' }} >
+                    <Select native value={sport} onChange={handleSportChange} id="sport" autoWidth style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000", height: '42px' }} >
                         <option value=""></option>
                         {sportsList.map((sport) => (
                             <option key={sport} value={sport}>{sport}</option>
@@ -102,7 +102,7 @@ const Filter = (props) => {
             </Box>
             <Box sx={{ marginRight: '10px' }} display='inline'>
                 <FormControl variant='outlined' >
-                    <Select native value={location} onChange={handleLocationChange} label="Select Location" id={"location"} autoWidth style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000", height: '37px' }}>
+                    <Select native value={location} onChange={handleLocationChange} label="Select Location" id={"location"} autoWidth style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000", height: '42px' }}>
                         <option value=""></option>
                         {locationList.map((location) => (
                             <option key={location} value={location}>{location}</option>
@@ -112,7 +112,7 @@ const Filter = (props) => {
             </Box>
             <Box sx={{ marginRight: '10px' }} display='inline'>
                 <FormControl variant='outlined' >
-                    <Select native value={level} onChange={handelLevelChange} label="Select Level" id={"level"} autoWidth style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000", height: '37px' }}>
+                    <Select native value={level} onChange={handelLevelChange} label="Select Level" id={"level"} autoWidth style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000", height: '42px' }}>
                         <option value=""></option>
                         {levelList.map((level) => (
                             <option key={level} value={level}>{level}</option>

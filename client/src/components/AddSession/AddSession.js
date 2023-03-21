@@ -12,10 +12,10 @@ import Select from '@material-ui/core/Select';
 import Slider from '@material-ui/core/Slider';
 import TextField from '@material-ui/core/TextField';
 import Box from '@material-ui/core/Box';
-import Chip from '@material-ui/core/Chip';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+import "./AddSession.css";
 
-import Datetime from 'react-datetime';
-import "react-datetime/css/react-datetime.css";
 
 const serverURL = "";
 
@@ -50,7 +50,8 @@ const AddSession = (props) => {
     const [sport, setSport] = React.useState();
     const [location, setLocation] = React.useState();
     const [level, setLevel] = React.useState();
-    const [requiredField, setRequiredField] = React.useState(true);
+    const [openError, setOpenError] = React.useState(false);
+    const [openSuccess, setOpenSuccess] = React.useState(false);
 
     const sportsList = ['Soccer', 'Basketball', 'Volleyball'];
     const locationList = ['PAC', 'CIF'];
@@ -69,7 +70,6 @@ const AddSession = (props) => {
         setSport();
         setLocation();
         setLevel();
-        setRequiredField(true);
     };
 
     const handlePlayerChange = (event, value) => {
@@ -92,8 +92,10 @@ const AddSession = (props) => {
         setLocation(event.target.value);
     };
 
-    const handleDateChange = (moment) => {
-        setDate(new Date(moment));
+    const handleDateChange = (event) => {
+        var newDate = event.target.value;
+        console.log(newDate + ":00")
+        setDate(new Date(newDate + ":00"));
     };
 
     const addSession = (session) => {
@@ -105,6 +107,7 @@ const AddSession = (props) => {
     const addSessionUser = (sessionID) => {
         callApiAddSessionUser(sessionID)
             .then(res => {
+                setOpenSuccess(true);
             })
     }
 
@@ -149,9 +152,8 @@ const AddSession = (props) => {
     }
 
     const handleSubmit = () => {
-        console.log("here")
+        console.log("here", date);
         if (description && maxPlayers && level && location && sport && date) {
-
             postData.description = description;
             postData.maxPlayers = maxPlayers;
             postData.level = level;
@@ -162,10 +164,22 @@ const AddSession = (props) => {
             addSession(postData);
             handleClose();
         } else {
-            setRequiredField(false);
+            setOpenError(true);
         }
+    };
 
+    const handleErrorClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            setOpenError(false);
+        }
+        setOpenError(false);
+    };
 
+    const handleSuccessClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            setOpenSuccess(false);
+        }
+        setOpenSuccess(false);
     };
 
     return (
@@ -180,7 +194,7 @@ const AddSession = (props) => {
                         <Box sx={{ padding: '2vh' }}>
                             <FormControl variant="outlined" fullWidth>
                                 <InputLabel>Select Sport</InputLabel>
-                                <Select native value={sport} onChange={handleSportChange} label="Select Sport" id="sport" autoWidth>
+                                <Select native value={sport} onChange={handleSportChange} label="Select Sport" id="sport" autoWidth style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000"}}>
                                     <option value=""></option>
                                     {sportsList.map((sport) => (
                                         <option key={sport} value={sport}>{sport}</option>
@@ -192,7 +206,7 @@ const AddSession = (props) => {
                         <Box sx={{ padding: '2vh' }}>
                             <FormControl variant="outlined" fullWidth>
                                 <InputLabel>Select Location</InputLabel>
-                                <Select native value={location} onChange={handleLocationChange} label="Select Location" id={"location"} autoWidth>
+                                <Select native value={location} onChange={handleLocationChange} label="Select Location" id={"location"} autoWidth style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000"}}>
                                     <option value=""></option>
                                     {locationList.map((location) => (
                                         <option key={location} value={location}>{location}</option>
@@ -204,7 +218,7 @@ const AddSession = (props) => {
                         <Box sx={{ padding: '2vh' }}>
                             <FormControl variant="outlined" fullWidth>
                                 <InputLabel>Select Level</InputLabel>
-                                <Select native value={level} onChange={handelLevelChange} label="Select Level" id={"level"} autoWidth >
+                                <Select native value={level} onChange={handelLevelChange} label="Select Level" id={"level"} autoWidth style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000"}}>
                                     <option value=""></option>
                                     {levelList.map((level) => (
                                         <option key={level} value={level}>{level}</option>
@@ -215,7 +229,7 @@ const AddSession = (props) => {
 
                         <Box sx={{ padding: '2vh' }}>
                             <InputLabel>Select Date and Time</InputLabel>
-                            <Datetime onChange={handleDateChange} value={date} initialValue={new Date()} />
+                            <TextField variant='outlined' id="date" type="datetime-local" onChange={handleDateChange} style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000"}}/>
                         </Box>
 
                         <Box sx={{ padding: '2vh' }}>
@@ -224,20 +238,26 @@ const AddSession = (props) => {
                         </Box>
 
                         <Box sx={{ padding: '2vh' }}>
-                            <TextField variant='outlined' value={description} id="description" label="Description" onChange={handleDescChange} multiline fullWidth rows={4} />
+                            <TextField variant='outlined' value={description} id="description" label="Description" onChange={handleDescChange} multiline fullWidth rows={4} style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000"}}/>
                         </Box>
                     </Box>
 
-                    <Box sx={{ textAlign: 'center' }} hidden={requiredField}>
-                        <Chip color="secondary" data-testid="requiredFields" label="Make sure all fields are filled in" />
-                    </Box>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} data-testid="closeButton" style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000" }}>Close</Button>
                     <Button onClick={handleSubmit} data-testid="submitButton" style={{ backgroundColor: "#000000", color: "rgb(251, 178, 0)" }}>Submit</Button>
                 </DialogActions>
             </Dialog>
-
+            <Snackbar open={openError} autoHideDuration={6000} onClose={handleErrorClose}>
+                <MuiAlert onClose={handleErrorClose} severity="error">
+                    Cannot add session. Fill out all fields!
+                </MuiAlert>
+            </Snackbar>
+            <Snackbar open={openSuccess} autoHideDuration={6000} onClose={handleSuccessClose}>
+                <MuiAlert onClose={handleSuccessClose} severity="success">
+                    Added session successfully!
+                </MuiAlert>
+            </Snackbar>
         </ThemeProvider >
     )
 }
