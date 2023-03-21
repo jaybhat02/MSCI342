@@ -225,7 +225,7 @@ const AddSession = (props) => {
 
                         <Box sx={{ padding: '2vh' }}>
                             <InputLabel>Select Date and Time</InputLabel>
-                            <TextField id="datetime-local" type="datetime-local" onChange={handleDateChange}/>
+                            <TextField id="datetime-local" type="datetime-local" onChange={handleDateChange} />
                         </Box>
 
                         <Box sx={{ padding: '2vh' }}>
