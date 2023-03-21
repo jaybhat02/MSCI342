@@ -12,10 +12,9 @@ import Select from '@material-ui/core/Select';
 import Slider from '@material-ui/core/Slider';
 import TextField from '@material-ui/core/TextField';
 import Box from '@material-ui/core/Box';
-import Chip from '@material-ui/core/Chip';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
-import Datetime from 'react-datetime';
-import "react-datetime/css/react-datetime.css";
 
 const serverURL = "";
 
@@ -47,12 +46,13 @@ const AddSession = (props) => {
     const [sport, setSport] = React.useState();
     const [location, setLocation] = React.useState();
     const [level, setLevel] = React.useState();
-    const [requiredField, setRequiredField] = React.useState(true);
+    const [openError, setOpenError] = React.useState(false);
+    const [openSuccess, setOpenSuccess] = React.useState(false);
 
     const sportsList = ['Soccer', 'Basketball', 'Volleyball'];
     const locationList = ['PAC', 'CIF'];
     const levelList = ['Beginner', 'Intermediate', 'Competitive'];
-    const postData = { 'sport': null, 'location': null, 'level': null, 'maxPlayers': null, 'description': null, 'date': null};
+    const postData = { 'sport': null, 'location': null, 'level': null, 'maxPlayers': null, 'description': null, 'date': null };
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -66,7 +66,6 @@ const AddSession = (props) => {
         setSport();
         setLocation();
         setLevel();
-        setRequiredField(true);
     };
 
     const handlePlayerChange = (event, value) => {
@@ -89,8 +88,10 @@ const AddSession = (props) => {
         setLocation(event.target.value);
     };
 
-    const handleDateChange = (moment) => {
-        setDate(new Date(moment));
+    const handleDateChange = (event) => {
+        var newDate = event.target.value;
+        console.log(newDate + ":00")
+        setDate(new Date(newDate + ":00"));
     };
 
     const addSession = (session) => {
@@ -102,6 +103,7 @@ const AddSession = (props) => {
     const addSessionUser = (sessionID) => {
         callApiAddSessionUser(sessionID)
             .then(res => {
+                setOpenSuccess(true);
             })
     }
 
@@ -146,9 +148,8 @@ const AddSession = (props) => {
     }
 
     const handleSubmit = () => {
-        console.log("here")
+        console.log("here", date);
         if (description && maxPlayers && level && location && sport && date) {
-
             postData.description = description;
             postData.maxPlayers = maxPlayers;
             postData.level = level;
@@ -159,10 +160,22 @@ const AddSession = (props) => {
             addSession(postData);
             handleClose();
         } else {
-            setRequiredField(false);
+            setOpenError(true);
         }
+    };
 
+    const handleErrorClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            setOpenError(false);
+        }
+        setOpenError(false);
+    };
 
+    const handleSuccessClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            setOpenSuccess(false);
+        }
+        setOpenSuccess(false);
     };
 
     return (
@@ -212,7 +225,7 @@ const AddSession = (props) => {
 
                         <Box sx={{ padding: '2vh' }}>
                             <InputLabel>Select Date and Time</InputLabel>
-                            <Datetime onChange={handleDateChange} value={date} initialValue={new Date()} />
+                            <TextField id="datetime-local" type="datetime-local" onChange={handleDateChange} />
                         </Box>
 
                         <Box sx={{ padding: '2vh' }}>
@@ -225,16 +238,22 @@ const AddSession = (props) => {
                         </Box>
                     </Box>
 
-                    <Box sx={{ textAlign: 'center' }} hidden={requiredField}>
-                        <Chip color="secondary" data-testid="requiredFields" label="Make sure all fields are filled in" />
-                    </Box>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} data-testid="closeButton">Cancel</Button>
                     <Button onClick={handleSubmit} data-testid="submitButton">Submit</Button>
                 </DialogActions>
             </Dialog>
-
+            <Snackbar open={openError} autoHideDuration={6000} onClose={handleErrorClose}>
+                <MuiAlert onClose={handleErrorClose} severity="error">
+                    Cannot add session. Fill out all fields!
+                </MuiAlert>
+            </Snackbar>
+            <Snackbar open={openSuccess} autoHideDuration={6000} onClose={handleSuccessClose}>
+                <MuiAlert onClose={handleSuccessClose} severity="success">
+                    Added session successfully!
+                </MuiAlert>
+            </Snackbar>
         </ThemeProvider >
     )
 }
