@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-
+import history from '../Navigation/history';
 import { ThemeProvider, styled } from '@material-ui/core/styles';
 import SessionList from '../SessionList/SessionList';
 import AddSession from '../AddSession/AddSession';
@@ -125,6 +125,11 @@ class Home extends Component {
     console.log("User settings: ", body);
     return body;
   }
+  
+  startUp = async ()=>{
+    
+  }
+
 
   render() {
     // const [profile,setProfile]=React.useState();
@@ -132,6 +137,7 @@ class Home extends Component {
     // console.log(profile);
     // localStorage.clear();
     let Profile = localStorage.getItem("profile");
+   
     console.log(JSON.parse(Profile));
     // setProfile(getProfile);
     // console.log(profile);
@@ -144,10 +150,30 @@ class Home extends Component {
 }
 const Review = () => {
   const [profile, setProfile] = React.useState();
-  React.useEffect(() => {
+  
+  const startUp =async()=>{
     let tempProfile = localStorage.getItem("profile");
-    console.log(JSON.parse(tempProfile)[0]);
-    setProfile(JSON.parse(tempProfile)[0])
+    let pp=JSON.parse(tempProfile);
+    console.log(pp);
+    if(pp!=null){
+      console.log(pp[0]);
+      setProfile(pp[0])
+    }
+    
+    
+    return pp;
+  }
+
+
+  React.useEffect(() => {
+    let pp=startUp().then((peps)=>{
+      console.log("hello aneodjbnabjkdbjkabwldnaw");
+      console.log(peps);
+      if(peps==null){
+        console.log("its emptyyyyyyyyy")
+        history.push("/");
+      }
+    })
   }, []);
   return (
     <ThemeProvider theme={lightTheme}>
