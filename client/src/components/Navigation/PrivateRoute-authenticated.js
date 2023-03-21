@@ -4,6 +4,7 @@ import SignInForm from '../SignIn';
 import SignUpPage from '../SignUp';
 import LandingPage from '../Landing';
 import HomePage from '../Home';
+import Upcoming from '../Upcoming';
 import history from './history';
 
 export default function PrivateRoute({
@@ -27,7 +28,7 @@ export default function PrivateRoute({
         />
         <Route path="/SignIn" component={SignInForm} />
         <Route path="/SignUp" component={SignUpPage} />
-
+        <Route path="/Upcoming" component={Upcoming} />
       </Switch>
     </Router>
   );

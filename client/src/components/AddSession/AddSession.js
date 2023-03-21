@@ -194,7 +194,7 @@ const AddSession = (props) => {
                         <Box sx={{ padding: '2vh' }}>
                             <FormControl variant="outlined" fullWidth>
                                 <InputLabel>Select Sport</InputLabel>
-                                <Select native value={sport} onChange={handleSportChange} label="Select Sport" id="sport" autoWidth style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000"}}>
+                                <Select native value={sport} onChange={handleSportChange} label="Select Sport" id="sport" autoWidth style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000" }}>
                                     <option value=""></option>
                                     {sportsList.map((sport) => (
                                         <option key={sport} value={sport}>{sport}</option>
@@ -206,7 +206,7 @@ const AddSession = (props) => {
                         <Box sx={{ padding: '2vh' }}>
                             <FormControl variant="outlined" fullWidth>
                                 <InputLabel>Select Location</InputLabel>
-                                <Select native value={location} onChange={handleLocationChange} label="Select Location" id={"location"} autoWidth style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000"}}>
+                                <Select native value={location} onChange={handleLocationChange} label="Select Location" id={"location"} autoWidth style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000" }}>
                                     <option value=""></option>
                                     {locationList.map((location) => (
                                         <option key={location} value={location}>{location}</option>
@@ -218,7 +218,7 @@ const AddSession = (props) => {
                         <Box sx={{ padding: '2vh' }}>
                             <FormControl variant="outlined" fullWidth>
                                 <InputLabel>Select Level</InputLabel>
-                                <Select native value={level} onChange={handelLevelChange} label="Select Level" id={"level"} autoWidth style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000"}}>
+                                <Select native value={level} onChange={handelLevelChange} label="Select Level" id={"level"} autoWidth style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000" }}>
                                     <option value=""></option>
                                     {levelList.map((level) => (
                                         <option key={level} value={level}>{level}</option>
@@ -229,16 +229,16 @@ const AddSession = (props) => {
 
                         <Box sx={{ padding: '2vh' }}>
                             <InputLabel>Select Date and Time</InputLabel>
-                            <TextField variant='outlined' id="date" type="datetime-local" onChange={handleDateChange} style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000"}}/>
+                            <TextField variant='outlined' id="date" type="datetime-local" onChange={handleDateChange} style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000" }} />
                         </Box>
 
                         <Box sx={{ padding: '2vh' }}>
                             <InputLabel>Select Max Number of People</InputLabel>
-                            <Slider value={maxPlayers} onChange={handlePlayerChange} defaultValue={5} step={1} marks  min={2} max={10} valueLabelDisplay="auto" style={{ color: "#000000"}}/>
+                            <Slider value={maxPlayers} onChange={handlePlayerChange} defaultValue={5} step={1} marks min={2} max={10} valueLabelDisplay="auto" style={{ color: "#000000" }} />
                         </Box>
 
                         <Box sx={{ padding: '2vh' }}>
-                            <TextField variant='outlined' value={description} id="description" label="Description" onChange={handleDescChange} multiline fullWidth rows={4} style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000"}}/>
+                            <TextField variant='outlined' value={description} id="description" label="Description" onChange={handleDescChange} multiline fullWidth rows={4} style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000" }} />
                         </Box>
                     </Box>
 
@@ -247,17 +247,17 @@ const AddSession = (props) => {
                     <Button onClick={handleClose} data-testid="closeButton" style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000" }}>Close</Button>
                     <Button onClick={handleSubmit} data-testid="submitButton" style={{ backgroundColor: "#000000", color: "rgb(251, 178, 0)" }}>Submit</Button>
                 </DialogActions>
+                <Snackbar open={openError} autoHideDuration={6000} onClose={handleErrorClose}>
+                    <MuiAlert onClose={handleErrorClose} severity="error">
+                        Cannot add session. Fill out all fields!
+                    </MuiAlert>
+                </Snackbar>
+                <Snackbar open={openSuccess} autoHideDuration={6000} onClose={handleSuccessClose}>
+                    <MuiAlert onClose={handleSuccessClose} severity="success">
+                        Added session successfully!
+                    </MuiAlert>
+                </Snackbar>
             </Dialog>
-            <Snackbar open={openError} autoHideDuration={6000} onClose={handleErrorClose}>
-                <MuiAlert onClose={handleErrorClose} severity="error">
-                    Cannot add session. Fill out all fields!
-                </MuiAlert>
-            </Snackbar>
-            <Snackbar open={openSuccess} autoHideDuration={6000} onClose={handleSuccessClose}>
-                <MuiAlert onClose={handleSuccessClose} severity="success">
-                    Added session successfully!
-                </MuiAlert>
-            </Snackbar>
         </ThemeProvider >
     )
 }

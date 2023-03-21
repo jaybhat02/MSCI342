@@ -189,18 +189,17 @@ const DetailSession = (props) => {
                     <Button onClick={handleClose} data-testid="closeButton" style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000" }}>Close</Button>
                     <Button onClick={handleJoin} data-testid="closeButton" style={{ backgroundColor: "#000000", color: "rgb(251, 178, 0)" }}>Join</Button>
                 </DialogActions>
+                <Snackbar open={openError} autoHideDuration={6000} onClose={handleErrorClose}>
+                    <MuiAlert onClose={handleErrorClose} severity="error">
+                        Cannot join session!
+                    </MuiAlert>
+                </Snackbar>
+                <Snackbar open={openSuccess} autoHideDuration={6000} onClose={handleSuccessClose}>
+                    <MuiAlert onClose={handleSuccessClose} severity="success">
+                        Joined session successfully!
+                    </MuiAlert>
+                </Snackbar>
             </Dialog>
-            <Snackbar open={openError} autoHideDuration={6000} onClose={handleErrorClose}>
-                <MuiAlert onClose={handleErrorClose} severity="error">
-                    Cannot join session!
-                </MuiAlert>
-            </Snackbar>
-            <Snackbar open={openSuccess} autoHideDuration={6000} onClose={handleSuccessClose}>
-                <MuiAlert onClose={handleSuccessClose} severity="success">
-                    Joined session successfully!
-                </MuiAlert>
-            </Snackbar>
-
         </ThemeProvider >
     )
 }
