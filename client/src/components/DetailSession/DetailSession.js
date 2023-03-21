@@ -37,7 +37,7 @@ const lightTheme = createTheme({
             background: '#e1f1fd'
         },
         secondary: {
-            main: "#ffd700",
+            main: "rgb(251, 178, 0)",
             light: '#f05545',
             dark: '#7f0000'
         },
@@ -120,7 +120,7 @@ const DetailSession = (props) => {
 
     return (
         <ThemeProvider theme={lightTheme}>
-            <Button variant="outlined" data-testid="addSessionButton" onClick={handleClickOpen}>
+            <Button variant="outlined" data-testid="addSessionButton" onClick={handleClickOpen} style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000" }}>
                 View Details
             </Button>
             <Dialog open={open} fullWidth >
@@ -169,8 +169,8 @@ const DetailSession = (props) => {
                         </Grid>}
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleJoin} data-testid="closeButton">Join</Button>
-                    <Button onClick={handleClose} data-testid="closeButton">Close</Button>
+                    <Button onClick={handleClose} data-testid="closeButton" style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000" }}>Close</Button>
+                    <Button onClick={handleJoin} data-testid="closeButton" style={{ backgroundColor: "#000000", color: "rgb(251, 178, 0)" }}>Join</Button>
                 </DialogActions>
             </Dialog>
 

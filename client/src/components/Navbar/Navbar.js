@@ -24,18 +24,21 @@ const lightTheme = createTheme({
             background: '#e1f1fd'
         },
         secondary: {
-            main: "#ffd700",
+            main: "rgb(251, 178, 0)",
             light: '#f05545',
             dark: '#7f0000'
         },
     },
+    typography: {
+        fontFamily: ["Open Sans, sans-serif"].join(",")
+    }
 });
 
 const NavigationBar = (props) => {
 
     return (
         <div>
-            <AppBar position="static" color="primary">
+            <AppBar position="static" style={{ backgroundColor: "#000000", color: "rgb(251, 178, 0)" }}>
                 <Toolbar>
                     <Link
                         color="inherit"

@@ -32,11 +32,14 @@ const lightTheme = createTheme({
             background: '#e1f1fd'
         },
         secondary: {
-            main: "#ffd700",
+            main: "rgb(251, 178, 0)",
             light: '#f05545',
             dark: '#7f0000'
         },
     },
+    typography: {
+        fontFamily: ["Open Sans, sans-serif"].join(",")
+    }
 });
 
 const AddSession = (props) => {
@@ -52,7 +55,7 @@ const AddSession = (props) => {
     const sportsList = ['Soccer', 'Basketball', 'Volleyball'];
     const locationList = ['PAC', 'CIF'];
     const levelList = ['Beginner', 'Intermediate', 'Competitive'];
-    const postData = { 'sport': null, 'location': null, 'level': null, 'maxPlayers': null, 'description': null, 'date': null};
+    const postData = { 'sport': null, 'location': null, 'level': null, 'maxPlayers': null, 'description': null, 'date': null };
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -167,7 +170,7 @@ const AddSession = (props) => {
 
     return (
         <ThemeProvider theme={lightTheme}>
-            <Button variant="outlined" data-testid="addSessionButton" onClick={handleClickOpen}>
+            <Button variant="contained" data-testid="addSessionButton" onClick={handleClickOpen} style={{ backgroundColor: "#000000", color: "rgb(251, 178, 0)" }}>
                 Add New Game Session
             </Button>
             <Dialog open={open} data-testid="addSessionModal" fullWidth >
@@ -217,11 +220,11 @@ const AddSession = (props) => {
 
                         <Box sx={{ padding: '2vh' }}>
                             <InputLabel>Select Max Number of People</InputLabel>
-                            <Slider value={maxPlayers} onChange={handlePlayerChange} defaultValue={5} step={1} marks min={2} max={10} valueLabelDisplay="auto" />
+                            <Slider value={maxPlayers} onChange={handlePlayerChange} defaultValue={5} step={1} marks  min={2} max={10} valueLabelDisplay="auto" style={{ color: "#000000"}}/>
                         </Box>
 
                         <Box sx={{ padding: '2vh' }}>
-                            <TextField value={description} id="description" label="Description" onChange={handleDescChange} multiline fullWidth rows={4} />
+                            <TextField variant='outlined' value={description} id="description" label="Description" onChange={handleDescChange} multiline fullWidth rows={4} />
                         </Box>
                     </Box>
 
@@ -230,8 +233,8 @@ const AddSession = (props) => {
                     </Box>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose} data-testid="closeButton">Cancel</Button>
-                    <Button onClick={handleSubmit} data-testid="submitButton">Submit</Button>
+                    <Button onClick={handleClose} data-testid="closeButton" style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000" }}>Close</Button>
+                    <Button onClick={handleSubmit} data-testid="submitButton" style={{ backgroundColor: "#000000", color: "rgb(251, 178, 0)" }}>Submit</Button>
                 </DialogActions>
             </Dialog>
 

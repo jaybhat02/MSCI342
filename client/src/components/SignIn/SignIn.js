@@ -182,7 +182,7 @@ export default function SignIn() {
               fullWidth
               variant="contained"
               color="black"
-              sx={{ mt: 3, mb: 2, color: "#FFD700" }}
+              sx={{ mt: 3, mb: 2, color: "rgb(251, 178, 0)" }}
             >
               Sign In
             </Button>
