@@ -244,8 +244,8 @@ const AddSession = (props) => {
 
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose} data-testid="closeButton" style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000" }}>Close</Button>
                     <Button onClick={handleSubmit} data-testid="submitButton" style={{ backgroundColor: "#000000", color: "rgb(251, 178, 0)" }}>Submit</Button>
+                    <Button onClick={handleClose} data-testid="closeButton" style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000" }}>Close</Button>
                 </DialogActions>
             </Dialog>
             <Snackbar open={openError} autoHideDuration={6000} onClose={handleErrorClose}>
