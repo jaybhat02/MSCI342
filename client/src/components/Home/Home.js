@@ -132,9 +132,9 @@ class Home extends Component {
     console.log("User settings: ", body);
     return body;
   }
-  
-  startUp = async ()=>{
-    
+
+  startUp = async () => {
+
   }
 
 
@@ -144,7 +144,7 @@ class Home extends Component {
     // console.log(profile);
     // localStorage.clear();
     let Profile = localStorage.getItem("profile");
-   
+
     console.log(JSON.parse(Profile));
     // setProfile(getProfile);
     // console.log(profile);
@@ -157,26 +157,24 @@ class Home extends Component {
 }
 const Review = () => {
   const [profile, setProfile] = React.useState();
-  
-  const startUp =async()=>{
+
+  const startUp = async () => {
     let tempProfile = localStorage.getItem("profile");
-    let pp=JSON.parse(tempProfile);
+    let pp = JSON.parse(tempProfile);
     console.log(pp);
-    if(pp!=null){
+    if (pp != null) {
       console.log(pp[0]);
       setProfile(pp[0])
     }
-    
-    
+
     return pp;
   }
 
-
   React.useEffect(() => {
-    let pp=startUp().then((peps)=>{
+    let pp = startUp().then((peps) => {
       console.log("hello aneodjbnabjkdbjkabwldnaw");
       console.log(peps);
-      if(peps==null){
+      if (peps == null) {
         console.log("its emptyyyyyyyyy")
         history.push("/");
       }

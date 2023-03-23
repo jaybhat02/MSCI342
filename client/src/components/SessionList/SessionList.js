@@ -181,7 +181,7 @@ const List = (props) => {
                                 {item.location} on {new Intl.DateTimeFormat('en-GB', { month: 'long', day: 'numeric', hour: "numeric", minute: "numeric", hour12: true }).format(new Date(item.date_and_time))}
                             </Typography>
                             <Box marginTop={2} >
-                                <DetailSession item={item} profile={props.profile} />
+                                <DetailSession item={item} profile={props.profile} type={'Home'}/>
                             </Box>
                         </CardContent>
                     </Grid>
