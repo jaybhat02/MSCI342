@@ -161,5 +161,19 @@ app.post('/api/joinSession', (req, res) => {
 	connection.end();
 });
 
+app.post('/api/getPreviousSessions', (req, res) => {
+	var session = req.body;
+	var data = session.data;
+	var today = new Date();
+	let sql = "SELECT S.sport, S.level, S.date_and_time, S.location, S.max_players, S.session_description, S.session_id FROM sessions S, user_sessions US WHERE S.session_id = US.session_id and US.user_id = " + JSON.stringify(data.user_id) + " and S.date_and_time < " + "'" + today.toLocaleDateString("en-US") + "' ORDER BY S.date_and_time DESC";
+	console.log(sql);
+	let connection = mysql.createConnection(config);
+	connection.query(sql, function (err, result, fields) {
+		if (err) throw err;
+		res.send({ results: result });
+	});
+	connection.end();
+});
+
 app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
 //app.listen(port, '129.97.25.211'); //for the deployed version, specify the IP address of the server
