@@ -95,7 +95,7 @@ app.post('/api/addSession', (req, res) => {
 		}
 	});
 
-	let someQuery = 'SELECT session_id FROM sessions WHERE sport = ' + JSON.stringify(session.data.sport) + ' AND location = ' + JSON.stringify(session.data.location) + ' AND level = ' + JSON.stringify(session.data.level) + ' AND max_players = ' + JSON.stringify(session.data.maxPlayers) + ' AND session_description = ' + JSON.stringify(session.data.description) + ' AND date_and_time = ' + JSON.stringify(session.data.date) +';'
+	let someQuery = 'SELECT session_id FROM sessions WHERE sport = ' + JSON.stringify(session.data.sport) + ' AND location = ' + JSON.stringify(session.data.location) + ' AND level = ' + JSON.stringify(session.data.level) + ' AND max_players = ' + JSON.stringify(session.data.maxPlayers) + ' AND session_description = ' + JSON.stringify(session.data.description) + ' AND date_and_time = ' + JSON.stringify(session.data.date) + ';'
 	connection.query(someQuery, (error, results, fields) => {
 		if (error) {
 			console.error(error.message);
@@ -104,7 +104,7 @@ app.post('/api/addSession', (req, res) => {
 		sessionID = results;
 		res.send({ status: "pass", sessionID: sessionID });
 	});
-	
+
 	connection.end();
 });
 
@@ -119,7 +119,7 @@ app.post('/api/addSessionUser', (req, res) => {
 			console.error(error.message);
 			return { status: "fail" };
 		}
-		res.send({ status: "pass"});
+		res.send({ status: "pass" });
 	});
 
 });
@@ -146,7 +146,7 @@ app.post('/api/SignUp', (req, res) => {
 
 app.post('/api/joinSession', (req, res) => {
 	var session = req.body;
-	
+
 	let connection = mysql.createConnection(config);
 	let sql = 'INSERT INTO user_sessions (session_id, user_id) VALUES ?';
 	var values = [Object.values(session.data)];
@@ -156,10 +156,25 @@ app.post('/api/joinSession', (req, res) => {
 			console.error(error.message);
 			return { status: "fail" };
 		}
-		res.send({ status: "pass"});
+		res.send({ status: "pass" });
 	});
 	connection.end();
 });
+
+app.post('/api/getUpcomingSessions', (req, res) => {
+	var session = req.body;
+	var data = session.data;
+	var today = new Date();
+	let sql = "SELECT S.sport, S.level, S.date_and_time, S.location, S.max_players, S.session_description, S.session_id FROM sessions S, user_sessions US WHERE US.user_id =  " + JSON.stringify(data.user_id) + " AND S.session_id = US.session_id AND S.date_and_time > " + " '" + today.toLocaleDateString("en-US") + "' ORDER BY S.date_and_time";;
+	console.log(sql);
+	let connection = mysql.createConnection(config);
+	connection.query(sql, function (err, result, fields) {
+		if (err) throw err;
+		res.send({ results: result })
+	})
+	connection.end();
+});
+
 
 app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
 //app.listen(port, '129.97.25.211'); //for the deployed version, specify the IP address of the server
