@@ -126,7 +126,7 @@ const Previous = () => {
 
     return (
         <ThemeProvider theme={lightTheme}>
-            <Navbar />
+            <Navbar profile={profile}/>
             <Container maxWidth style={{ overflow: 'scroll', backgroundColor: "rgb(253, 253, 253)", position: 'fixed', width: '100%', height: '100%' }}>
                 <Grid container spacing={3} style={{ padding: '25px' }} >
                     <Grid item xs={12}>

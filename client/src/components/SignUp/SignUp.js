@@ -36,50 +36,60 @@ const postData = { 'firstName': null, 'lastName': null, 'email': null, 'password
 export default function SignUp() {
   const [error, setError] = React.useState(false);
   const [snackError, setSnackError] = React.useState(false);
+  const [emailError, setEmailError] = React.useState(false);
 
   const handleClose = () => {
     setSnackError(false);
+    setEmailError(false);
   }
 
   const signUp = (signUp) => {
     callApiSignUp(signUp)
-        .then(res => {
-        })
-}
+      .then(res => {
+      })
+  }
 
-const callApiSignUp = async (signUp) => {
+  const callApiSignUp = async (signUp) => {
     const url = serverURL + "/api/signUp";
     console.log(url);
     const response = await fetch(url, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            //authorization: `Bearer ${this.state.token}`
-        },
-        body: JSON.stringify({
-            data: signUp
-        })
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        //authorization: `Bearer ${this.state.token}`
+      },
+      body: JSON.stringify({
+        data: signUp
+      })
     });
     const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
     console.log('something')
     return body;
-}
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    
+
     let x = data.get('email');
     let y = data.get('password');
     let z = data.get('firstName');
     let w = data.get('lastName');
     let v = data.get('gender');
+
     if (x == "" || y == "" || z == "" || w == "" || v == null) {
       setError(true);
       setSnackError(true);
       return false;
     }
+
+    if (!checkEmail(x)) {
+      setError(true);
+      setEmailError(true);
+      return false;
+    }
+
     postData.firstName = z;
     postData.lastName = w;
     postData.email = x;
@@ -89,6 +99,15 @@ const callApiSignUp = async (signUp) => {
     history.push('/')
     signUp(postData);
   };
+
+  const checkEmail = (email) => {
+    if (email.indexOf('@') === -1) return false;
+    else {
+      var i = email.indexOf('@');
+      if (email.substring(i) !== '@uwaterloo.ca') return false;
+    }
+    return true;
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -192,6 +211,9 @@ const callApiSignUp = async (signUp) => {
                 </Link>
               </Grid>
               <Grid item>
+                <Snackbar open={emailError} onClose={handleClose} autoHideDuration={3000} >
+                  <Alert variant="filled" severity="error" data-testid="requiredAlert">Please use UWaterloo Email</Alert>
+                </Snackbar>
                 <Snackbar open={snackError} onClose={handleClose} autoHideDuration={3000} >
                   <Alert variant="filled" severity="error" data-testid="requiredAlert">Please fill out missing fields</Alert>
                 </Snackbar>
