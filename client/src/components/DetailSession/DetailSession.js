@@ -65,6 +65,7 @@ const DetailSession = (props) => {
     const [progress, setProgress] = React.useState(0);
     const [openError, setOpenError] = React.useState(false);
     const [openSuccess, setOpenSuccess] = React.useState(false);
+    const [openUnenroll, setOpenUnenroll] = React.useState(false);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -125,6 +126,13 @@ const DetailSession = (props) => {
 
         setOpenSuccess(false);
     };
+    const handleLeaveClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            setOpenUnenroll(false);
+        }
+
+        setOpenUnenroll(false);
+    };
     const canJoin = () => {
         var userID = props.profile.user_id;
         var maxPlayers = props.item.max_players;
@@ -135,6 +143,36 @@ const DetailSession = (props) => {
         }
         return true;
     };
+
+    const handleUneroll = (event) => {
+        setOpen(false);
+        loadUnenroll();
+    }
+
+    const loadUnenroll = () => {
+        callApiUnenroll()
+            .then(res => {
+                setOpenUnenroll(true);
+                setTimeout(() => window.location.reload(false), 1500);
+            })
+    }
+
+    const callApiUnenroll = async () => {
+        const url = serverURL + "/api/unenroll";
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                data: props.item.session_id,
+                profile: props.profile.user_id,
+            }),
+        });
+        const body = await response.json();
+        if (response.status !== 200) throw Error(body.message);
+        return body;
+    }
 
     return (
         <ThemeProvider theme={lightTheme}>
@@ -186,20 +224,32 @@ const DetailSession = (props) => {
                         </Grid>}
                 </DialogContent>
                 <DialogActions>
+                    {props.type == 'Home'
+                        ? <Button onClick={handleJoin} style={{ backgroundColor: "#000000", color: "rgb(251, 178, 0)" }}>Join</Button>
+                        : null
+                    }
+                    {props.type == 'Upcoming'
+                        ? <Button onClick={handleUneroll} style={{ backgroundColor: "#000000", color: "rgb(251, 178, 0)" }}>Unenroll</Button>
+                        : null
+                    }
                     <Button onClick={handleClose} data-testid="closeButton" style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000" }}>Close</Button>
-                    <Button onClick={handleJoin} data-testid="closeButton" style={{ backgroundColor: "#000000", color: "rgb(251, 178, 0)" }}>Join</Button>
                 </DialogActions>
                 <Snackbar open={openError} autoHideDuration={6000} onClose={handleErrorClose}>
                     <MuiAlert onClose={handleErrorClose} severity="error">
                         Cannot join session!
                     </MuiAlert>
                 </Snackbar>
-                <Snackbar open={openSuccess} autoHideDuration={6000} onClose={handleSuccessClose}>
-                    <MuiAlert onClose={handleSuccessClose} severity="success">
-                        Joined session successfully!
-                    </MuiAlert>
-                </Snackbar>
             </Dialog>
+            <Snackbar open={openSuccess} autoHideDuration={6000} onClose={handleSuccessClose}>
+                <MuiAlert onClose={handleSuccessClose} severity="success">
+                    Joined session successfully!
+                </MuiAlert>
+            </Snackbar>
+            <Snackbar open={openUnenroll} autoHideDuration={6000} onClose={handleLeaveClose}>
+                <MuiAlert onClose={handleLeaveClose} severity="success">
+                    Unenrolled from session successfully!
+                </MuiAlert>
+            </Snackbar>
         </ThemeProvider >
     )
 }

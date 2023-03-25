@@ -3,6 +3,7 @@ import { Router, Switch, Route } from "react-router-dom";
 import SignInForm from '../SignIn';
 import SignUpPage from '../SignUp';
 import LandingPage from '../Landing';
+import Previous from '../Previous';
 import HomePage from '../Home';
 import Upcoming from '../Upcoming';
 import history from './history';
@@ -28,6 +29,7 @@ export default function PrivateRoute({
         />
         <Route path="/SignIn" component={SignInForm} />
         <Route path="/SignUp" component={SignUpPage} />
+        <Route path="/Previous" component={Previous} />        
         <Route path="/Upcoming" component={Upcoming} />
       </Switch>
     </Router>

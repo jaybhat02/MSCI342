@@ -108,6 +108,7 @@ const AddSession = (props) => {
         callApiAddSessionUser(sessionID)
             .then(res => {
                 setOpenSuccess(true);
+                setTimeout(() => window.location.reload(false), 1750);
             })
     }
 
@@ -252,12 +253,12 @@ const AddSession = (props) => {
                         Cannot add session. Fill out all fields!
                     </MuiAlert>
                 </Snackbar>
-                <Snackbar open={openSuccess} autoHideDuration={6000} onClose={handleSuccessClose}>
-                    <MuiAlert onClose={handleSuccessClose} severity="success">
-                        Added session successfully!
-                    </MuiAlert>
-                </Snackbar>
             </Dialog>
+            <Snackbar open={openSuccess} autoHideDuration={6000} onClose={handleSuccessClose}>
+                <MuiAlert onClose={handleSuccessClose} severity="success">
+                    Added session successfully!
+                </MuiAlert>
+            </Snackbar>
         </ThemeProvider >
     )
 }
