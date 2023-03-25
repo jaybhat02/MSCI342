@@ -166,7 +166,7 @@ const SessionList = (props) => {
 const List = (props) => {
 
     return (
-        <Grid container spacing={6} style={{ marginTop: 50, textAlign: 'center' }} id="container">
+        <Grid container spacing={6} style={{ marginTop: 50, textAlign: 'center', marginBottom: 50 }} id="container">
             {props.list.map((item) => {
                 return (
                     <Grid item sm={4} >

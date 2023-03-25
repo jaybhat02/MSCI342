@@ -67,7 +67,7 @@ const NavigationBar = (props) => {
                         <Link
                             color="inherit"
                             style={{ cursor: "pointer", margin: '20px' }}
-
+                            onClick={() => history.push('/Upcoming')}
                         >
                             <Typography variant="body1" component="div" sx={{ flexGrow: 1 }}>
                                 Upcoming

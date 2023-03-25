@@ -39,11 +39,11 @@ const lightTheme = createTheme({
     }
 });
 
-const Previous = () => {
+const Upcoming = () => {
     const [loading, setLoading] = React.useState(true);
-    const [previousList, setPreviousList] = React.useState([]);
+    const [upcomingList, setUpcomingList] = React.useState([])
     const [profile, setProfile] = React.useState();
-    const [recentPlayers, setRecentPlayers] = React.useState();
+
 
     const startUp = async () => {
         let tempProfile = localStorage.getItem("profile");
@@ -52,7 +52,7 @@ const Previous = () => {
         if (pp != null) {
             console.log(pp[0]);
             setProfile(pp[0])
-            loadSessions(pp[0]);
+            loadUpcomingSessions(pp[0]);
         }
 
         return pp;
@@ -60,7 +60,7 @@ const Previous = () => {
 
     React.useEffect(() => {
         let pp = startUp().then((peps) => {
-            console.log("hello aneodjbnabjkdbjkabwldnaw");
+            console.log("hello");
             console.log(peps);
             if (peps == null) {
                 console.log("its emptyyyyyyyyy")
@@ -69,46 +69,6 @@ const Previous = () => {
 
         })
     }, []);
-
-    const loadSessions = (profile_id) => {
-        callApiLoadSessions(profile_id)
-            .then(res => {
-                var sessionList = res.results;
-                console.log(sessionList);
-                callApiLoadUserSessions()
-                    .then(res => {
-                        var userSessionList = res.results;
-                        for (var session in sessionList) {
-                            var targetID = sessionList[session].session_id;
-                            sessionList[session].players = [];
-                            for (var user in userSessionList) {
-                                if (userSessionList[user].session_id === targetID) {
-                                    sessionList[session].players.push(userSessionList[user]);
-                                }
-                            }
-                        }
-                        setLoading(false);
-                        setPreviousList(sessionList);
-                    })
-            })
-    }
-
-    const callApiLoadSessions = async (profile_id) => {
-        const url = serverURL + "/api/getPreviousSessions";
-        console.log(url);
-        const response = await fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                data: profile_id,
-            }),
-        });
-        const body = await response.json();
-        if (response.status !== 200) throw Error(body.message);
-        return body;
-    }
 
     const callApiLoadUserSessions = async () => {
         const url = serverURL + "/api/getUserSessions";
@@ -124,6 +84,46 @@ const Previous = () => {
         return body;
     }
 
+    const callApiLoadUpcomingSessions = async (profile_id) => {
+        const url = serverURL + "/api/getUpcomingSessions";
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                data: profile_id,
+            }),
+        });
+        const body = await response.json();
+        if (response.status !== 200) throw Error(body.message);
+        return body;
+    }
+
+    const loadUpcomingSessions = (profile_id) => {
+        callApiLoadUpcomingSessions(profile_id)
+            .then(res => {
+                var upcomingSessionList = res.results;
+                console.log(upcomingSessionList);
+                callApiLoadUserSessions()
+                    .then(res => {
+                        var upcomingUserSessionList = res.results;
+                        for (var session in upcomingSessionList) {
+                            var targetID = upcomingSessionList[session].session_id;
+                            upcomingSessionList[session].players = [];
+                            for (var user in upcomingUserSessionList) {
+                                if (upcomingUserSessionList[user].session_id === targetID) {
+                                    upcomingSessionList[session].players.push(upcomingUserSessionList[user]);
+                                }
+                            }
+                        }
+
+                        setLoading(false);
+                        setUpcomingList(upcomingSessionList);
+                    })
+            })
+    }
+
     return (
         <ThemeProvider theme={lightTheme}>
             <Navbar profile={profile}/>
@@ -132,16 +132,16 @@ const Previous = () => {
                     <Grid item xs={12}>
                         <Box sx={{ textAlign: 'right', textAlign: 'center', padding: '10px' }}>
                             <Typography id='head'>
-                                Previous Sessions
+                                Upcoming Sessions
                             </Typography>
                         </Box>
                     </Grid>
 
                     <Grid item xs={12}>
                         <Grid container spacing={6} style={{ marginTop: 50, textAlign: 'center' }} id="container">
-                            {previousList.map((item) => {
+                            {upcomingList.map((item) => {
                                 return (
-                                    <Grid item sm={4} >
+                                    <Grid item sm={4}>
                                         <CardContent id="containersmall">
                                             <Typography variant="h5" component="h2">
                                                 {item.sport}
@@ -153,15 +153,15 @@ const Previous = () => {
                                                 {item.location} on {new Intl.DateTimeFormat('en-GB', { month: 'long', day: 'numeric', hour: "numeric", minute: "numeric", hour12: true }).format(new Date(item.date_and_time))}
                                             </Typography>
                                             <Box marginTop={2} >
-                                                <DetailSession item={item} profile={profile} type={'Previous'} />
+                                                <DetailSession item={item} profile={profile} type={'Upcoming'} />
                                             </Box>
                                         </CardContent>
                                     </Grid>
                                 );
                             })}
-                        </Grid >
+                        </Grid>
                     </Grid>
-
+                    
                     {loading && (
                         <Box sx={{ textAlign: 'center', textAlign: 'center', }} width='100%'>
                             <CircularProgress color='secondary' />
@@ -175,4 +175,4 @@ const Previous = () => {
 }
 
 
-export default Previous;
+export default Upcoming;
