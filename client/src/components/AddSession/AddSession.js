@@ -249,7 +249,7 @@ const AddSession = (props) => {
                     <Button onClick={handleClose} data-testid="closeButton" style={{ backgroundColor: "rgb(251, 178, 0)", color: "#000000" }}>Close</Button>
                 </DialogActions>
                 <Snackbar open={openError} autoHideDuration={6000} onClose={handleErrorClose}>
-                    <MuiAlert onClose={handleErrorClose} severity="error">
+                    <MuiAlert onClose={handleErrorClose} severity="error" data-testid="requiredFields">
                         Cannot add session. Fill out all fields!
                     </MuiAlert>
                 </Snackbar>
