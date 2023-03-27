@@ -5,3 +5,9 @@ module.exports = {
         "^.+\\.(js|jsx)$": "babel-jest",
     }
 };
+
+module.exports = {
+    moduleNameMapper: {
+      "\\.(css|sass)$": "identity-obj-proxy",
+    },
+  };
